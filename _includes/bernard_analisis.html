@@ -1,0 +1,1267 @@
+<!-- ═══════════════════════════════════════════════════════════════════════
+     ETAPA 05 — MODELAGEM SUPERVISIONADA (TEMP_CNN)
+     Integrado ao fluxograma metodológico no padrão expansível WRI/LAPIG
+     Cada subseção e cada gráfico possuem caixas expansíveis em largura total (100%)
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style>
+  /* Estilos escopados para os componentes internos do bloco Temp_CNN (#step-tempcnn)
+     seguindo estritamente a paleta, tipografia e cartões do portal Rede ILPF / LAPIG */
+  #step-tempcnn .tcnn-intro-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 1.5rem;
+    padding: 1.1rem 1.25rem;
+    background: linear-gradient(135deg, #f6faf6 0%, #ffffff 100%);
+    border: 1px solid #d5e3d5;
+    border-left: 4px solid #18362d;
+    border-radius: 8px;
+    margin-bottom: 1.1rem;
+  }
+  #step-tempcnn .tcnn-intro-main {
+    flex: 1 1 420px;
+  }
+  #step-tempcnn .tcnn-kicker {
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #15803d;
+    margin-bottom: 0.25rem;
+  }
+  #step-tempcnn .tcnn-headline {
+    font-family: var(--font-serif);
+    font-size: 1.18rem;
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 1.3;
+    margin: 0 0 0.35rem;
+  }
+  #step-tempcnn .tcnn-dek {
+    font-family: var(--font-sans);
+    font-size: 0.84rem;
+    color: #475569;
+    line-height: 1.55;
+    margin: 0 0 0.6rem;
+  }
+  #step-tempcnn .tcnn-meta-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  #step-tempcnn .tcnn-meta-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    background: #eef5ee;
+    border: 1px solid #cbd5e1;
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #18362d;
+  }
+  #step-tempcnn .tcnn-icons-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(92px, 1fr));
+    gap: 0.55rem;
+    flex: 0 1 440px;
+  }
+  @media (max-width: 820px) {
+    #step-tempcnn .tcnn-icons-grid {
+      grid-template-columns: repeat(2, 1fr);
+      flex: 1 1 100%;
+    }
+  }
+  #step-tempcnn .tcnn-icon-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.5rem 0.45rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  }
+  #step-tempcnn .tcnn-icon-card svg {
+    width: 100%;
+    max-width: 96px;
+    height: 46px;
+    color: #18362d;
+    margin-bottom: 0.2rem;
+  }
+  #step-tempcnn .tcnn-icon-card .sigla {
+    font-family: var(--font-sans);
+    font-size: 0.76rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.1;
+  }
+  #step-tempcnn .tcnn-icon-card .nome {
+    font-family: var(--font-sans);
+    font-size: 0.62rem;
+    color: #64748b;
+    line-height: 1.2;
+    margin-top: 0.1rem;
+  }
+
+  /* Barra de controle das subcaixas internas */
+  #step-tempcnn .tcnn-subtoolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.55rem 0.85rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 0.85rem;
+  }
+  #step-tempcnn .tcnn-subtoolbar__label {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #334155;
+  }
+  #step-tempcnn .tcnn-subtoolbar__btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  #step-tempcnn .tcnn-subbtn {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #1e293b;
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.28rem 0.65rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  #step-tempcnn .tcnn-subbtn:hover {
+    background: #eef5ee;
+    border-color: #18362d;
+    color: #18362d;
+  }
+
+  /* Subcaixas expansíveis/recolhíveis no mesmo padrão .fnode */
+  #step-tempcnn .tcnn-sublist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  #step-tempcnn .tcnn-box {
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  #step-tempcnn .tcnn-box.is-open {
+    border-color: #18362d;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  }
+  #step-tempcnn .tcnn-box__toggle {
+    all: unset;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.65rem 0.95rem;
+    background: #f1f5f1;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s ease;
+  }
+  #step-tempcnn .tcnn-box.is-open .tcnn-box__toggle {
+    background: #18362d;
+    color: #ffffff;
+    border-bottom-color: rgba(255, 255, 255, 0.15);
+  }
+  #step-tempcnn .tcnn-box__toggle:hover {
+    background: #e4ede4;
+  }
+  #step-tempcnn .tcnn-box.is-open .tcnn-box__toggle:hover {
+    background: #1f4539;
+  }
+  #step-tempcnn .tcnn-box__num {
+    flex-shrink: 0;
+    padding: 0.18rem 0.5rem;
+    border-radius: 5px;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 800;
+    background: #18362d;
+    color: #ffffff;
+  }
+  #step-tempcnn .tcnn-box.is-open .tcnn-box__num {
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  #step-tempcnn .tcnn-box__titles {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  #step-tempcnn .tcnn-box__eyebrow {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #475569;
+  }
+  #step-tempcnn .tcnn-box.is-open .tcnn-box__eyebrow {
+    color: rgba(255, 255, 255, 0.78);
+  }
+  #step-tempcnn .tcnn-box__title {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.25;
+  }
+  #step-tempcnn .tcnn-box.is-open .tcnn-box__title {
+    color: #ffffff;
+  }
+  #step-tempcnn .tcnn-box__chev {
+    flex-shrink: 0;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease;
+  }
+  #step-tempcnn .tcnn-box.is-open .tcnn-box__chev {
+    background: rgba(255, 255, 255, 0.16);
+    transform: rotate(180deg);
+  }
+  #step-tempcnn .tcnn-box__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #step-tempcnn .tcnn-box.is-open .tcnn-box__panel {
+    grid-template-rows: 1fr;
+  }
+  #step-tempcnn .tcnn-box__inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+  #step-tempcnn .tcnn-box__body {
+    padding: 1rem 1.15rem;
+  }
+
+  /* ── CAIXA EXPANSÍVEL DE GRÁFICO INDIVIDUAL (100% LARGURA, PROPORÇÃO NÍTIDA) ── */
+  #step-tempcnn .tcnn-chart-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-top: 0.75rem;
+  }
+  #step-tempcnn .tcnn-chart-box {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  #step-tempcnn .tcnn-chart-box.is-open {
+    border-color: #2d5a47;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+  }
+  #step-tempcnn .tcnn-chart-box__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.55rem 0.9rem;
+    background: #f8fafc;
+    border-bottom: 1px solid transparent;
+  }
+  #step-tempcnn .tcnn-chart-box.is-open .tcnn-chart-box__header {
+    background: #eef5ee;
+    border-bottom-color: #d5e3d5;
+  }
+  #step-tempcnn .tcnn-chart-box__toggle {
+    all: unset;
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    text-align: left;
+    min-width: 0;
+  }
+  #step-tempcnn .tcnn-chart-box__badge {
+    flex-shrink: 0;
+    padding: 0.16rem 0.5rem;
+    border-radius: 4px;
+    background: #18362d;
+    color: #ffffff;
+    font-family: var(--font-sans);
+    font-size: 0.66rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  #step-tempcnn .tcnn-chart-box__label {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.3;
+  }
+  #step-tempcnn .tcnn-chart-box__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-shrink: 0;
+  }
+  #step-tempcnn .tcnn-chart-box__zoom {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    padding: 0.22rem 0.55rem;
+    font-family: var(--font-sans);
+    font-size: 0.66rem;
+    font-weight: 700;
+    color: #18362d;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  #step-tempcnn .tcnn-chart-box__zoom:hover {
+    background: #18362d;
+    border-color: #18362d;
+    color: #ffffff;
+  }
+  #step-tempcnn .tcnn-chart-box__state {
+    font-family: var(--font-sans);
+    font-size: 0.66rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #18362d;
+    cursor: pointer;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  #step-tempcnn .tcnn-chart-box__state .txt-open,
+  #step-tempcnn .tcnn-chart-box.is-open .tcnn-chart-box__state .txt-closed {
+    display: none;
+  }
+  #step-tempcnn .tcnn-chart-box.is-open .tcnn-chart-box__state .txt-open {
+    display: inline;
+  }
+  #step-tempcnn .tcnn-chart-box__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #step-tempcnn .tcnn-chart-box.is-open .tcnn-chart-box__panel {
+    grid-template-rows: 1fr;
+  }
+  #step-tempcnn .tcnn-chart-box__inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+  #step-tempcnn .tcnn-fig {
+    margin: 0;
+    background: #ffffff;
+    padding: 0.9rem 1rem 0.85rem;
+    text-align: center;
+  }
+  #step-tempcnn .tcnn-fig img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    display: block;
+    margin: 0 auto;
+    cursor: zoom-in;
+    border: 1px solid #f1f5f9;
+  }
+  #step-tempcnn .tcnn-fig figcaption {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: #475569;
+    margin-top: 0.65rem;
+    padding-top: 0.55rem;
+    border-top: 1px dashed #e2e8f0;
+    line-height: 1.5;
+    text-align: left;
+  }
+
+  /* Linha do tempo Split 70/30 + SSL + Fine-Tuning */
+  #step-tempcnn .tcnn-timeline {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.6rem;
+    margin: 0.85rem 0 0.5rem;
+  }
+  @media (max-width: 960px) {
+    #step-tempcnn .tcnn-timeline {
+      grid-template-columns: 1fr;
+    }
+  }
+  #step-tempcnn .tcnn-tl-step {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 0.65rem 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: #334155;
+    line-height: 1.4;
+    position: relative;
+  }
+  #step-tempcnn .tcnn-tl-step.ssl {
+    background: #f0f9ff;
+    border-color: #7dd3fc;
+  }
+  #step-tempcnn .tcnn-tl-step.ft {
+    background: #f0fdf4;
+    border-color: #86efac;
+  }
+  #step-tempcnn .tcnn-tl-step .num {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    background: #18362d;
+    color: #ffffff;
+    margin-bottom: 0.3rem;
+  }
+  #step-tempcnn .tcnn-tl-step b {
+    display: block;
+    font-size: 0.82rem;
+    color: #0f172a;
+    margin-bottom: 0.15rem;
+  }
+  #step-tempcnn .tcnn-tl-dots {
+    display: inline-flex;
+    gap: 0.25rem;
+    margin: 0.25rem 0;
+  }
+  #step-tempcnn .tcnn-tl-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #94a3b8;
+    display: inline-block;
+  }
+  #step-tempcnn .tcnn-tl-branch {
+    margin-top: 0.55rem;
+    padding: 0.6rem 0.85rem;
+    background: #fffbeb;
+    border: 1px dashed #f59e0b;
+    border-radius: 8px;
+    font-family: var(--font-sans);
+    font-size: 0.76rem;
+    color: #92400e;
+  }
+
+  /* Swatch de classe na tabela de métricas */
+  #step-tempcnn .tcnn-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    margin-right: 0.4rem;
+    vertical-align: middle;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+  }
+
+  /* Lightbox Modal de Tela Cheia para inspeção em alta definição */
+  .tcnn-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(15, 23, 42, 0.88);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .tcnn-lightbox.is-active {
+    display: flex;
+  }
+  .tcnn-lightbox__content {
+    position: relative;
+    max-width: 96vw;
+    max-height: 92vh;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 1rem 1.2rem 0.9rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .tcnn-lightbox__close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.75rem;
+    background: #18362d;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.3rem 0.7rem;
+    font-family: var(--font-sans);
+    font-size: 0.74rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .tcnn-lightbox__img {
+    max-width: 92vw;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 6px;
+  }
+  .tcnn-lightbox__caption {
+    margin-top: 0.6rem;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    color: #1e293b;
+    text-align: center;
+    max-width: 90ch;
+  }
+</style>
+
+<article class="fnode fnode--model" id="step-tempcnn">
+  <button class="fnode__toggle" type="button" aria-expanded="false" aria-controls="panel-tempcnn">
+    <span class="fnode__bar">
+      <span class="fnode__num">05</span>
+      <span class="fnode__titles">
+        <span class="fnode__phase">Fase 5 · Inteligência Computacional &amp; Séries Temporais de EVI2</span>
+        <span class="fnode__title">Modelagem Supervisionada (Temp_CNN)</span>
+      </span>
+      <span class="fstatus fstatus--prelim">Em Execução</span>
+      <span class="fnode__chev">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </span>
+    </span>
+    <span class="fnode__summary">
+      <span class="fnode__desc">
+        Classificação profunda com rede convolucional temporal multi-cabeça (TempCNN) sobre séries mensais de EVI2 (Sentinel-2, 13 meses), combinando pré-treino auto-supervisionado (SSL) e fine-tuning supervisionado para 9 classes de uso e integração no Cerrado goiano.
+      </span>
+      <span class="fnode__kpis">
+        <span class="fkpi"><span class="fkpi__v">1.961</span><span class="fkpi__l">Amostras Utilizáveis</span></span>
+        <span class="fkpi"><span class="fkpi__v">Split 70/30</span><span class="fkpi__l">SSL + Fine-Tuning</span></span>
+        <span class="fkpi"><span class="fkpi__v">TempCNN 3×</span><span class="fkpi__l">Kernels 3, 5 e 7</span></span>
+        <span class="fkpi"><span class="fkpi__v">OA 56,0%</span><span class="fkpi__l">F1 Macro 0,362</span></span>
+      </span>
+      <span class="fnode__more">
+        <span class="is-closed-text">Ver detalhes analíticos ▾</span>
+        <span class="is-open-text">Recolher detalhes ▴</span>
+      </span>
+    </span>
+  </button>
+
+  <div class="fnode__panel" id="panel-tempcnn">
+    <div class="fnode__panel-inner">
+      <div class="fnode__body">
+
+        <!-- CABEÇALHO SÍNTESE COM ÍCONES DAS INTEGRAÇÕES -->
+        <div class="tcnn-intro-banner">
+          <div class="tcnn-intro-main">
+            <div class="tcnn-kicker">ILPF &middot; Classificação de sistemas de uso da terra</div>
+            <h3 class="tcnn-headline">TempCNN com séries temporais de EVI2 para classificar sistemas de Integração Lavoura–Pecuária–Floresta</h3>
+            <p class="tcnn-dek">
+              Arquitetura, amostragem e divisão dos dados, resultados de classificação — um retrato honesto do que funcionou e do que ainda precisa avançar para discriminar o componente arbóreo.
+            </p>
+            <div class="tcnn-meta-pills">
+              <span class="tcnn-meta-pill">Cerrado goiano &middot; Sentinel-2</span>
+              <span class="tcnn-meta-pill">9 classes &middot; tipo_integ</span>
+              <span class="tcnn-meta-pill">Série Mensal EVI2 (13 meses)</span>
+            </div>
+          </div>
+          <div class="tcnn-icons-grid">
+            <div class="tcnn-icon-card">
+              <svg viewBox="0 0 140 76" xmlns="http://www.w3.org/2000/svg"><line x1="4" y1="64" x2="136" y2="64" stroke="currentColor" opacity="0.25" stroke-width="1.5"/><g><line x1="24" y1="64" x2="24" y2="50" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="46.5" r="3.1" fill="currentColor"/><line x1="35" y1="64" x2="35" y2="50" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="35" cy="46.5" r="3.1" fill="currentColor"/><line x1="46" y1="64" x2="46" y2="50" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="46" cy="46.5" r="3.1" fill="currentColor"/></g><g><ellipse cx="105" cy="51" rx="17" ry="9" fill="currentColor" opacity="0.85"/><circle cx="121" cy="44" r="5.6" fill="currentColor"/><line x1="95" y1="59" x2="95" y2="66" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><line x1="107" y1="60" x2="107" y2="67" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><line x1="116" y1="59" x2="116" y2="66" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></g></svg>
+              <span class="sigla">ILP</span>
+              <span class="nome">Lavoura-Pecuária</span>
+            </div>
+            <div class="tcnn-icon-card">
+              <svg viewBox="0 0 140 76" xmlns="http://www.w3.org/2000/svg"><line x1="4" y1="64" x2="136" y2="64" stroke="currentColor" opacity="0.25" stroke-width="1.5"/><g><line x1="12" y1="64" x2="12" y2="50" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="46.5" r="3.1" fill="currentColor"/><line x1="23" y1="64" x2="23" y2="50" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="23" cy="46.5" r="3.1" fill="currentColor"/><line x1="34" y1="64" x2="34" y2="50" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="34" cy="46.5" r="3.1" fill="currentColor"/></g><g><ellipse cx="70" cy="51" rx="17" ry="9" fill="currentColor" opacity="0.85"/><circle cx="86" cy="44" r="5.6" fill="currentColor"/><line x1="60" y1="59" x2="60" y2="66" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><line x1="72" y1="60" x2="72" y2="67" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><line x1="81" y1="59" x2="81" y2="66" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></g><g><line x1="116" y1="64" x2="116" y2="53" stroke="currentColor" stroke-width="2.4"/><polygon points="101,54 131,54 116,31" fill="currentColor" opacity="0.55"/><polygon points="105,43 127,43 116,21" fill="currentColor"/></g></svg>
+              <span class="sigla">ILPF</span>
+              <span class="nome">Lavoura-Pecuária-Floresta</span>
+            </div>
+            <div class="tcnn-icon-card">
+              <svg viewBox="0 0 140 76" xmlns="http://www.w3.org/2000/svg"><line x1="4" y1="64" x2="136" y2="64" stroke="currentColor" opacity="0.25" stroke-width="1.5"/><g><ellipse cx="35" cy="51" rx="17" ry="9" fill="currentColor" opacity="0.85"/><circle cx="51" cy="44" r="5.6" fill="currentColor"/><line x1="25" y1="59" x2="25" y2="66" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><line x1="37" y1="60" x2="37" y2="67" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><line x1="46" y1="59" x2="46" y2="66" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></g><g><line x1="105" y1="64" x2="105" y2="53" stroke="currentColor" stroke-width="2.4"/><polygon points="90,54 120,54 105,31" fill="currentColor" opacity="0.55"/><polygon points="94,43 116,43 105,21" fill="currentColor"/></g></svg>
+              <span class="sigla">IPF</span>
+              <span class="nome">Pecuária-Floresta</span>
+            </div>
+            <div class="tcnn-icon-card">
+              <svg viewBox="0 0 140 76" xmlns="http://www.w3.org/2000/svg"><line x1="4" y1="64" x2="136" y2="64" stroke="currentColor" opacity="0.25" stroke-width="1.5"/><g><line x1="24" y1="64" x2="24" y2="50" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="46.5" r="3.1" fill="currentColor"/><line x1="35" y1="64" x2="35" y2="50" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="35" cy="46.5" r="3.1" fill="currentColor"/><line x1="46" y1="64" x2="46" y2="50" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="46" cy="46.5" r="3.1" fill="currentColor"/></g><g><line x1="105" y1="64" x2="105" y2="53" stroke="currentColor" stroke-width="2.4"/><polygon points="90,54 120,54 105,31" fill="currentColor" opacity="0.55"/><polygon points="94,43 116,43 105,21" fill="currentColor"/></g></svg>
+              <span class="sigla">ILF</span>
+              <span class="nome">Lavoura-Floresta</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TOOLBAR INTERNA PARA EXPANDIR / RECOLHER AS SUBCAIXAS E GRÁFICOS -->
+        <div class="tcnn-subtoolbar">
+          <span class="tcnn-subtoolbar__label">Etapas e Gráficos do Experimento Temp_CNN (Cada seção e gráfico pode ser expandido/recolhido em largura total)</span>
+          <div class="tcnn-subtoolbar__btns">
+            <button type="button" class="tcnn-subbtn" id="tcnn-expand-all">Expandir Tudo</button>
+            <button type="button" class="tcnn-subbtn" id="tcnn-collapse-all">Recolher Subcaixas</button>
+          </div>
+        </div>
+
+        <!-- LISTA DE SUBCAIXAS EXPANSÍVEIS -->
+        <div class="tcnn-sublist" id="tcnn-sublist">
+
+          <!-- 5.1 VISÃO GERAL DO PIPELINE -->
+          <div class="tcnn-box is-open">
+            <button type="button" class="tcnn-box__toggle" aria-expanded="true">
+              <span class="tcnn-box__num">5.1</span>
+              <span class="tcnn-box__titles">
+                <span class="tcnn-box__eyebrow">Visão Geral do Experimento</span>
+                <span class="tcnn-box__title">Do dado de campo à avaliação final (6 estágios)</span>
+              </span>
+              <span class="tcnn-box__chev">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </span>
+            </button>
+            <div class="tcnn-box__panel">
+              <div class="tcnn-box__inner">
+                <div class="tcnn-box__body">
+                  <p>
+                    O fluxo experimental compreende seis estágios sequenciais: <strong>(1) amostragem de campo e talhões inspecionados</strong>, <strong>(2) extração mensal da mediana de EVI2</strong> via Google Earth Engine, <strong>(3) pré-processamento temporal</strong> (interpolação de valores faltantes), <strong>(4) divisão estratificada de treino e teste</strong>, <strong>(5) pré-treino auto-supervisionado (SSL) seguido de fine-tuning supervisionado</strong> e <strong>(6) avaliação final</strong> num conjunto de dados de teste nunca visto em treino.
+                  </p>
+                  <div class="tcnn-chart-stack">
+                    <div class="tcnn-chart-box is-open">
+                      <div class="tcnn-chart-box__header">
+                        <button type="button" class="tcnn-chart-box__toggle" aria-expanded="true">
+                          <span class="tcnn-chart-box__badge">Figura 5.1</span>
+                          <span class="tcnn-chart-box__label">Pipeline do experimento TempCNN (6 estágios)</span>
+                        </button>
+                        <div class="tcnn-chart-box__actions">
+                          <button type="button" class="tcnn-chart-box__zoom" data-zoom-src="{{ '/assets/figures/tempcnn/tempcnn_fig_1.png' | relative_url }}" data-zoom-caption="Figura 5.1 — Pipeline do experimento TempCNN">Tela Cheia &#10530;</button>
+                          <span class="tcnn-chart-box__state"><span class="txt-open">Recolher &#9652;</span><span class="txt-closed">Expandir &#9662;</span></span>
+                        </div>
+                      </div>
+                      <div class="tcnn-chart-box__panel">
+                        <div class="tcnn-chart-box__inner">
+                          <figure class="tcnn-fig">
+                            <img src="{{ '/assets/figures/tempcnn/tempcnn_fig_1.png' | relative_url }}" alt="Pipeline do experimento TempCNN" loading="lazy">
+                            <figcaption><strong>Figura 5.1 — Pipeline do experimento TempCNN:</strong> Fluxo completo desde a coleta e curadoria amostral até o pré-treino auto-supervisionado, ajuste fino supervisionado e validação independente.</figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5.2 AMOSTRAGEM E SPLIT 70/30 -->
+          <div class="tcnn-box">
+            <button type="button" class="tcnn-box__toggle" aria-expanded="false">
+              <span class="tcnn-box__num">5.2</span>
+              <span class="tcnn-box__titles">
+                <span class="tcnn-box__eyebrow">Amostragem &amp; Particionamento</span>
+                <span class="tcnn-box__title">1.961 amostras utilizáveis (9 classes) &amp; Split estratificado 70/30</span>
+              </span>
+              <span class="tcnn-box__chev">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </span>
+            </button>
+            <div class="tcnn-box__panel">
+              <div class="tcnn-box__inner">
+                <div class="tcnn-box__body">
+                  <p>
+                    A base de dados combina <strong>848 pontos de campo</strong> e <strong>1.114 polígonos inspecionados</strong> no período de disponibilidade do Sentinel-2 (2016 a 2026), após a exclusão de um registro com classe de integração igual a zero. Cada amostra contém uma série temporal mediana mensal de EVI2 com duração de <strong>13 meses</strong> (de outubro do ano vigente a outubro do ano seguinte), extraída do Sentinel-2 via Google Earth Engine.
+                  </p>
+                  <div class="fnode__kpis fnode__kpis--inline">
+                    <span class="fkpi"><span class="fkpi__v">592</span><span class="fkpi__l">Agricultura</span></span>
+                    <span class="fkpi"><span class="fkpi__v">454</span><span class="fkpi__l">Pastagem</span></span>
+                    <span class="fkpi"><span class="fkpi__v">10–32</span><span class="fkpi__l">Classes Raras</span></span>
+                  </div>
+
+                  <div class="tcnn-chart-stack">
+                    <div class="tcnn-chart-box is-open">
+                      <div class="tcnn-chart-box__header">
+                        <button type="button" class="tcnn-chart-box__toggle" aria-expanded="true">
+                          <span class="tcnn-chart-box__badge">Gráfico 5.2</span>
+                          <span class="tcnn-chart-box__label">Distribuição amostral por classe de integração (n = 1.961)</span>
+                        </button>
+                        <div class="tcnn-chart-box__actions">
+                          <button type="button" class="tcnn-chart-box__zoom" data-zoom-src="{{ '/assets/figures/tempcnn/tempcnn_fig_2.png' | relative_url }}" data-zoom-caption="Gráfico 5.2 — Distribuição amostral por classe (1.961 amostras)">Tela Cheia &#10530;</button>
+                          <span class="tcnn-chart-box__state"><span class="txt-open">Recolher &#9652;</span><span class="txt-closed">Expandir &#9662;</span></span>
+                        </div>
+                      </div>
+                      <div class="tcnn-chart-box__panel">
+                        <div class="tcnn-chart-box__inner">
+                          <figure class="tcnn-fig">
+                            <img src="{{ '/assets/figures/tempcnn/tempcnn_fig_2.png' | relative_url }}" alt="Distribuição de classes na base amostral" loading="lazy">
+                            <figcaption><strong>Gráfico 5.2 — Distribuição amostral por classe:</strong> Forte desbalanceamento entre classes majoritárias (Agricultura e Pastagem) e sistemas integrados com componente arbóreo.</figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <h4>Protocolo de Divisão 70/30 &mdash; Dados de Teste Nunca Vistos em Treino</h4>
+                  <p>
+                    Os dados foram divididos na proporção de <strong>70% para treinamento (1.372 amostras)</strong> e <strong>30% para teste (589 amostras)</strong> de forma estratificada (<code>seed=42</code>). O conjunto de treino é submetido primeiro a um aprendizado auto-supervisionado (SSL) e, em seguida, ao ajuste fino utilizando os rótulos da classe de integração (<em>fine-tuning</em>):
+                  </p>
+                  <div class="tcnn-timeline">
+                    <div class="tcnn-tl-step">
+                      <span class="num">01</span>
+                      <b>1.961 amostras</b>
+                      Base utilizável curada (pontos + polígonos)
+                    </div>
+                    <div class="tcnn-tl-step">
+                      <span class="num">02</span>
+                      <b>Split 70/30</b>
+                      Divisão estratificada por classe (<code>seed=42</code>)
+                    </div>
+                    <div class="tcnn-tl-step ssl">
+                      <span class="num">03</span>
+                      <b>70% &middot; 1.372 (SSL)</b>
+                      <div class="tcnn-tl-dots"><span></span><span></span><span></span></div><br>
+                      Pré-treino auto-supervisionado sem rótulo de classe
+                    </div>
+                    <div class="tcnn-tl-step ft">
+                      <span class="num">04</span>
+                      <b>70% &middot; 1.372 (Fine-Tuning)</b>
+                      <div class="tcnn-tl-dots">
+                        <span style="background:#2fc912"></span>
+                        <span style="background:#eddc4b"></span>
+                        <span style="background:#f02907"></span>
+                        <span style="background:#b2f323"></span>
+                      </div><br>
+                      Mesmas amostras com rótulo &rarr; aprende pesos das classes
+                    </div>
+                    <div class="tcnn-tl-step">
+                      <span class="num">05</span>
+                      <b>Avaliação Final</b>
+                      Modelo testado exclusivamente na partição cega
+                    </div>
+                  </div>
+                  <div class="tcnn-tl-branch">
+                    <strong>Reserva Cega de Teste (30% &middot; 589 amostras):</strong> Separada imediatamente após o split estratificado — permanece 100% fora do pré-treino SSL e do fine-tuning, reaparecendo apenas na avaliação final de desempenho.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5.3 SÉRIES TEMPORAIS EVI2 (CADA GRÁFICO EXPANSÍVEL EM 100% DA LARGURA) -->
+          <div class="tcnn-box">
+            <button type="button" class="tcnn-box__toggle" aria-expanded="false">
+              <span class="tcnn-box__num">5.3</span>
+              <span class="tcnn-box__titles">
+                <span class="tcnn-box__eyebrow">Comportamento Fenológico</span>
+                <span class="tcnn-box__title">Curva média de EVI2 e variabilidade dentro de cada classe</span>
+              </span>
+              <span class="tcnn-box__chev">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </span>
+            </button>
+            <div class="tcnn-box__panel">
+              <div class="tcnn-box__inner">
+                <div class="tcnn-box__body">
+                  <p>
+                    As assinaturas temporais dividem-se em dois grupos fenológicos distintos: <strong>lavouras e campestres (Agricultura, ILP, Pastagem)</strong> apresentam pico vegetativo e queda sazonal bem destacados; já os <strong>sistemas com componente arbóreo (ILPF, IPF, ILF, Agrofloresta, Silvicultura)</strong> mantêm EVI2 elevado e com baixa amplitude sazonal ao longo do ano. Expanda ou recolha cada gráfico abaixo em largura total para visualização detalhada:
+                  </p>
+
+                  <div class="tcnn-chart-stack">
+                    <!-- GRÁFICO 5.3A EM LARGURA TOTAL -->
+                    <div class="tcnn-chart-box is-open">
+                      <div class="tcnn-chart-box__header">
+                        <button type="button" class="tcnn-chart-box__toggle" aria-expanded="true">
+                          <span class="tcnn-chart-box__badge">Gráfico 5.3a</span>
+                          <span class="tcnn-chart-box__label">Curva média de EVI2 por tipo de integração (separada por padrão fenológico)</span>
+                        </button>
+                        <div class="tcnn-chart-box__actions">
+                          <button type="button" class="tcnn-chart-box__zoom" data-zoom-src="{{ '/assets/figures/tempcnn/tempcnn_fig_3.png' | relative_url }}" data-zoom-caption="Gráfico 5.3a — Curva média de EVI2 por tipo de integração, separada por padrão fenológico">Tela Cheia &#10530;</button>
+                          <span class="tcnn-chart-box__state"><span class="txt-open">Recolher &#9652;</span><span class="txt-closed">Expandir &#9662;</span></span>
+                        </div>
+                      </div>
+                      <div class="tcnn-chart-box__panel">
+                        <div class="tcnn-chart-box__inner">
+                          <figure class="tcnn-fig">
+                            <img src="{{ '/assets/figures/tempcnn/tempcnn_fig_3.png' | relative_url }}" alt="Curvas médias de EVI2 por classe separadas por grupo fenológico" loading="lazy">
+                            <figcaption><strong>Gráfico 5.3a — Curva média de EVI2 por tipo de integração:</strong> Separação entre o regime sazonal acentuado das lavouras/pastagens (pico e queda sazonais bem destacados) e a estabilidade fenológica dos sistemas com componente arbóreo.</figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- GRÁFICO 5.3B EM LARGURA TOTAL -->
+                    <div class="tcnn-chart-box is-open">
+                      <div class="tcnn-chart-box__header">
+                        <button type="button" class="tcnn-chart-box__toggle" aria-expanded="true">
+                          <span class="tcnn-chart-box__badge">Gráfico 5.3b</span>
+                          <span class="tcnn-chart-box__label">Variabilidade intra-classe — EVI2 mensal (curva média e faixa de desvio padrão)</span>
+                        </button>
+                        <div class="tcnn-chart-box__actions">
+                          <button type="button" class="tcnn-chart-box__zoom" data-zoom-src="{{ '/assets/figures/tempcnn/tempcnn_fig_4.png' | relative_url }}" data-zoom-caption="Gráfico 5.3b — Variabilidade intra-classe (média ± desvio padrão de EVI2 por classe)">Tela Cheia &#10530;</button>
+                          <span class="tcnn-chart-box__state"><span class="txt-open">Recolher &#9652;</span><span class="txt-closed">Expandir &#9662;</span></span>
+                        </div>
+                      </div>
+                      <div class="tcnn-chart-box__panel">
+                        <div class="tcnn-chart-box__inner">
+                          <figure class="tcnn-fig">
+                            <img src="{{ '/assets/figures/tempcnn/tempcnn_fig_4.png' | relative_url }}" alt="Pequenos múltiplos de média e desvio padrão de EVI2 por classe" loading="lazy">
+                            <figcaption><strong>Gráfico 5.3b — Variabilidade intra-classe (média ± desvio padrão):</strong> Agricultura e ILP exibem as maiores amplitudes de variação coerentes com o calendário agrícola, enquanto as classes arbóreas exibem faixas estreitas e sobrepostas entre si.</figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5.4 ARQUITETURA TEMPCNN -->
+          <div class="tcnn-box">
+            <button type="button" class="tcnn-box__toggle" aria-expanded="false">
+              <span class="tcnn-box__num">5.4</span>
+              <span class="tcnn-box__titles">
+                <span class="tcnn-box__eyebrow">Arquitetura Deep Learning</span>
+                <span class="tcnn-box__title">TempCNN Multi-Cabeça (Kernels 3, 5 e 7) com Autoencoder SSL</span>
+              </span>
+              <span class="tcnn-box__chev">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </span>
+            </button>
+            <div class="tcnn-box__panel">
+              <div class="tcnn-box__inner">
+                <div class="tcnn-box__body">
+                  <p>
+                    Três cabeças convolucionais paralelas (com <strong>kernels de tamanho 3, 5 e 7</strong>) processam a série temporal de EVI2 em diferentes escalas de janela temporal. O espaço latente concatenado é inicialmente pré-treinado como <strong>autoencoder (SSL)</strong> para reconstrução da série antes de ser acoplado ao cabeçote classificador via <em>fine-tuning</em> supervisionado.
+                  </p>
+                  <div class="tcnn-chart-stack">
+                    <div class="tcnn-chart-box is-open">
+                      <div class="tcnn-chart-box__header">
+                        <button type="button" class="tcnn-chart-box__toggle" aria-expanded="true">
+                          <span class="tcnn-chart-box__badge">Figura 5.4</span>
+                          <span class="tcnn-chart-box__label">Diagrama da arquitetura TempCNN multi-cabeça selecionada</span>
+                        </button>
+                        <div class="tcnn-chart-box__actions">
+                          <button type="button" class="tcnn-chart-box__zoom" data-zoom-src="{{ '/assets/figures/tempcnn/tempcnn_fig_5.png' | relative_url }}" data-zoom-caption="Figura 5.4 — Arquitetura TempCNN multi-cabeça (kernels 3, 5 e 7)">Tela Cheia &#10530;</button>
+                          <span class="tcnn-chart-box__state"><span class="txt-open">Recolher &#9652;</span><span class="txt-closed">Expandir &#9662;</span></span>
+                        </div>
+                      </div>
+                      <div class="tcnn-chart-box__panel">
+                        <div class="tcnn-chart-box__inner">
+                          <figure class="tcnn-fig">
+                            <img src="{{ '/assets/figures/tempcnn/tempcnn_fig_5.png' | relative_url }}" alt="Diagrama da arquitetura TempCNN multi-cabeça vencedora" loading="lazy">
+                            <figcaption><strong>Figura 5.4 — Arquitetura TempCNN multi-cabeça selecionada:</strong> Extração multiescala (kernels 3, 5 e 7), concatenação no espaço latente e transferência entre o decodificador SSL e o classificador Softmax de 9 classes.</figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="fnode__kpis" style="margin-top: 0.75rem;">
+                    <span class="fkpi"><span class="fkpi__v">3 Cabeças</span><span class="fkpi__l">Ramos Convolucionais 1D</span></span>
+                    <span class="fkpi"><span class="fkpi__v">3, 5 e 7</span><span class="fkpi__l">Tamanhos de Kernel</span></span>
+                    <span class="fkpi"><span class="fkpi__v">16 / camada</span><span class="fkpi__l">Filtros Convolucionais</span></span>
+                    <span class="fkpi"><span class="fkpi__v">2 Blocos</span><span class="fkpi__l">Profundidade por Cabeça</span></span>
+                    <span class="fkpi"><span class="fkpi__v">0,20</span><span class="fkpi__l">Taxa de Dropout</span></span>
+                    <span class="fkpi"><span class="fkpi__v">1e-6</span><span class="fkpi__l">Regularização L2</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5.5 DESEMPENHO DO MODELO -->
+          <div class="tcnn-box">
+            <button type="button" class="tcnn-box__toggle" aria-expanded="false">
+              <span class="tcnn-box__num">5.5</span>
+              <span class="tcnn-box__titles">
+                <span class="tcnn-box__eyebrow">Avaliação Quantitativa no Conjunto de Teste</span>
+                <span class="tcnn-box__title">Matriz de Confusão e Métricas por Classe (Accuracy 0,560 · F1 Macro 0,362)</span>
+              </span>
+              <span class="tcnn-box__chev">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </span>
+            </button>
+            <div class="tcnn-box__panel">
+              <div class="tcnn-box__inner">
+                <div class="tcnn-box__body">
+                  <h4 style="margin-top: 0;">Métricas de Classificação por Tipologia (Conjunto de Teste Cego, n = 589)</h4>
+                  <div class="ftable-wrap">
+                    <table class="ftable">
+                      <thead>
+                        <tr>
+                          <th>Classe</th>
+                          <th>Precisão</th>
+                          <th>Recall</th>
+                          <th>F1-score</th>
+                          <th>Suporte (Teste)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><span class="tcnn-swatch" style="background:#2fc912"></span>Agricultura</td>
+                          <td>0,70</td>
+                          <td>0,74</td>
+                          <td><strong>0,72</strong></td>
+                          <td>178</td>
+                        </tr>
+                        <tr>
+                          <td><span class="tcnn-swatch" style="background:#eddc4b"></span>Pastagem</td>
+                          <td>0,65</td>
+                          <td>0,65</td>
+                          <td><strong>0,65</strong></td>
+                          <td>136</td>
+                        </tr>
+                        <tr>
+                          <td><span class="tcnn-swatch" style="background:#f02907"></span>IPF</td>
+                          <td>0,42</td>
+                          <td>0,46</td>
+                          <td><strong>0,44</strong></td>
+                          <td>108</td>
+                        </tr>
+                        <tr>
+                          <td><span class="tcnn-swatch" style="background:#b2f323"></span>ILP</td>
+                          <td>0,41</td>
+                          <td>0,39</td>
+                          <td><strong>0,40</strong></td>
+                          <td>107</td>
+                        </tr>
+                        <tr>
+                          <td><span class="tcnn-swatch" style="background:#718096"></span>Outros</td>
+                          <td>0,33</td>
+                          <td>0,26</td>
+                          <td><strong>0,29</strong></td>
+                          <td>23</td>
+                        </tr>
+                        <tr>
+                          <td><span class="tcnn-swatch" style="background:#d67910"></span>Agrofloresta</td>
+                          <td>0,18</td>
+                          <td>0,17</td>
+                          <td><strong>0,17</strong></td>
+                          <td>18</td>
+                        </tr>
+                        <tr>
+                          <td><span class="tcnn-swatch" style="background:#3c4d0a"></span>ILPF</td>
+                          <td>0,00</td>
+                          <td>0,00</td>
+                          <td><strong>0,00</strong></td>
+                          <td>10</td>
+                        </tr>
+                        <tr>
+                          <td><span class="tcnn-swatch" style="background:#1b4332"></span>Silvicultura</td>
+                          <td>0,00</td>
+                          <td>0,00</td>
+                          <td><strong>0,00</strong></td>
+                          <td>6</td>
+                        </tr>
+                        <tr>
+                          <td><span class="tcnn-swatch" style="background:#bcb915"></span>ILF</td>
+                          <td>0,00</td>
+                          <td>0,00</td>
+                          <td><strong>0,00</strong></td>
+                          <td>3</td>
+                        </tr>
+                        <tr class="ftable__total">
+                          <td>Global / Macro</td>
+                          <td colspan="2">Overall Accuracy: <strong>0,560</strong> (56,0%)</td>
+                          <td><strong>0,362</strong> (Macro)</td>
+                          <td><strong>589</strong></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p style="margin-top: 0.5rem;">
+                    <strong>Agricultura</strong> e <strong>Pastagem</strong> são bem reconhecidas (F1 &ge; 0,65), seguidas pelas classes integradas de maior suporte (<strong>IPF</strong> com F1 = 0,44 e <strong>ILP</strong> com F1 = 0,40); já as classes arbóreas raras na amostra de teste (ILPF, Silvicultura e ILF, com suporte &le; 10) obtiveram F1 = 0,00.
+                  </p>
+
+                  <div class="tcnn-chart-stack">
+                    <div class="tcnn-chart-box is-open">
+                      <div class="tcnn-chart-box__header">
+                        <button type="button" class="tcnn-chart-box__toggle" aria-expanded="true">
+                          <span class="tcnn-chart-box__badge">Gráfico 5.5</span>
+                          <span class="tcnn-chart-box__label">Matriz de Confusão no Conjunto de Teste (n = 589)</span>
+                        </button>
+                        <div class="tcnn-chart-box__actions">
+                          <button type="button" class="tcnn-chart-box__zoom" data-zoom-src="{{ '/assets/figures/tempcnn/tempcnn_fig_6.png' | relative_url }}" data-zoom-caption="Gráfico 5.5 — Matriz de Confusão no conjunto de teste (n = 589)">Tela Cheia &#10530;</button>
+                          <span class="tcnn-chart-box__state"><span class="txt-open">Recolher &#9652;</span><span class="txt-closed">Expandir &#9662;</span></span>
+                        </div>
+                      </div>
+                      <div class="tcnn-chart-box__panel">
+                        <div class="tcnn-chart-box__inner">
+                          <figure class="tcnn-fig">
+                            <img src="{{ '/assets/figures/tempcnn/tempcnn_fig_6.png' | relative_url }}" alt="Matriz de confusão no conjunto de teste" loading="lazy" style="max-width: 820px;">
+                            <figcaption><strong>Gráfico 5.5 — Matriz de Confusão (Conjunto de Teste, n = 589):</strong> Forte concentração de acertos na diagonal principal para Agricultura e Pastagem, e sobreposição espectral/temporal entre sistemas com árvores.</figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5.6 APLICAÇÃO ESPACIAL NO CERRADO GOIANO -->
+          <div class="tcnn-box">
+            <button type="button" class="tcnn-box__toggle" aria-expanded="false">
+              <span class="tcnn-box__num">5.6</span>
+              <span class="tcnn-box__titles">
+                <span class="tcnn-box__eyebrow">Inferência Espacial &amp; Incerteza</span>
+                <span class="tcnn-box__title">Região do Cerrado goiano e inspeção em área de exemplo</span>
+              </span>
+              <span class="tcnn-box__chev">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </span>
+            </button>
+            <div class="tcnn-box__panel">
+              <div class="tcnn-box__inner">
+                <div class="tcnn-box__body">
+                  <p>
+                    O modelo treinado foi aplicado espacialmente na região do Cerrado dentro do estado de Goiás (camada também disponível para exploração em <strong>30 m/px</strong> no <a href="{{ '/mapa/' | relative_url }}">Mapa Interativo</a>). Expanda cada mapa abaixo em largura total para inspecionar os tipos de integração previstos pixel a pixel e a superfície de probabilidade:
+                  </p>
+                  <div class="tcnn-chart-stack">
+                    <!-- MAPA DE CLASSES 5.6A -->
+                    <div class="tcnn-chart-box is-open">
+                      <div class="tcnn-chart-box__header">
+                        <button type="button" class="tcnn-chart-box__toggle" aria-expanded="true">
+                          <span class="tcnn-chart-box__badge">Mapa 5.6a</span>
+                          <span class="tcnn-chart-box__label">Mapa de classes previstas pela TempCNN no Cerrado goiano</span>
+                        </button>
+                        <div class="tcnn-chart-box__actions">
+                          <button type="button" class="tcnn-chart-box__zoom" data-zoom-src="{{ '/assets/figures/tempcnn/tempcnn_fig_7.png' | relative_url }}" data-zoom-caption="Mapa 5.6a — Mapa de classes (tipo_integ previsto pela TempCNN em cada pixel)">Tela Cheia &#10530;</button>
+                          <span class="tcnn-chart-box__state"><span class="txt-open">Recolher &#9652;</span><span class="txt-closed">Expandir &#9662;</span></span>
+                        </div>
+                      </div>
+                      <div class="tcnn-chart-box__panel">
+                        <div class="tcnn-chart-box__inner">
+                          <figure class="tcnn-fig">
+                            <img src="{{ '/assets/figures/tempcnn/tempcnn_fig_7.png' | relative_url }}" alt="Mapa de classificação do Cerrado goiano pela TempCNN" loading="lazy">
+                            <figcaption><strong>Mapa 5.6a — Mapa de classes:</strong> <code>tipo_integ</code> previsto pela TempCNN em cada pixel na área de estudo do Cerrado goiano.</figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- MAPA DE PROBABILIDADE 5.6B -->
+                    <div class="tcnn-chart-box is-open">
+                      <div class="tcnn-chart-box__header">
+                        <button type="button" class="tcnn-chart-box__toggle" aria-expanded="true">
+                          <span class="tcnn-chart-box__badge">Mapa 5.6b</span>
+                          <span class="tcnn-chart-box__label">Mapa de probabilidade máxima da classificação no Cerrado goiano</span>
+                        </button>
+                        <div class="tcnn-chart-box__actions">
+                          <button type="button" class="tcnn-chart-box__zoom" data-zoom-src="{{ '/assets/figures/tempcnn/tempcnn_fig_8.png' | relative_url }}" data-zoom-caption="Mapa 5.6b — Mapa de probabilidade máxima da classe vencedora">Tela Cheia &#10530;</button>
+                          <span class="tcnn-chart-box__state"><span class="txt-open">Recolher &#9652;</span><span class="txt-closed">Expandir &#9662;</span></span>
+                        </div>
+                      </div>
+                      <div class="tcnn-chart-box__panel">
+                        <div class="tcnn-chart-box__inner">
+                          <figure class="tcnn-fig">
+                            <img src="{{ '/assets/figures/tempcnn/tempcnn_fig_8.png' | relative_url }}" alt="Mapa de probabilidade máxima do Cerrado goiano" loading="lazy">
+                            <figcaption><strong>Mapa 5.6b — Mapa de probabilidade:</strong> Confiança do modelo Softmax na classe vencedora por pixel.</figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ZOOM EXEMPLO DETALHADO 5.6C -->
+                    <div class="tcnn-chart-box is-open">
+                      <div class="tcnn-chart-box__header">
+                        <button type="button" class="tcnn-chart-box__toggle" aria-expanded="true">
+                          <span class="tcnn-chart-box__badge">Figura 5.6c</span>
+                          <span class="tcnn-chart-box__label">Inspeção detalhada em área de exemplo (Satélite · Classe TempCNN · Probabilidade)</span>
+                        </button>
+                        <div class="tcnn-chart-box__actions">
+                          <button type="button" class="tcnn-chart-box__zoom" data-zoom-src="{{ '/assets/figures/tempcnn/tempcnn_fig_9.png' | relative_url }}" data-zoom-caption="Figura 5.6c — Comparação local lado a lado: Imagem de satélite, classificação TempCNN e probabilidade máxima">Tela Cheia &#10530;</button>
+                          <span class="tcnn-chart-box__state"><span class="txt-open">Recolher &#9652;</span><span class="txt-closed">Expandir &#9662;</span></span>
+                        </div>
+                      </div>
+                      <div class="tcnn-chart-box__panel">
+                        <div class="tcnn-chart-box__inner">
+                          <figure class="tcnn-fig">
+                            <img src="{{ '/assets/figures/tempcnn/tempcnn_fig_9.png' | relative_url }}" alt="Imagem de satélite, mapa classificado pela TempCNN e mapa de probabilidade máxima lado a lado" loading="lazy">
+                            <figcaption><strong>Figura 5.6c — Comparação local lado a lado:</strong> Mosaico óptico de satélite, superfície temática classificada pela TempCNN e superfície de probabilidade máxima evidenciando o contorno dos talhões agrícolas e pastoris.</figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5.7 SÍNTESE E PRÓXIMOS PASSOS -->
+          <div class="tcnn-box">
+            <button type="button" class="tcnn-box__toggle" aria-expanded="false">
+              <span class="tcnn-box__num">5.7</span>
+              <span class="tcnn-box__titles">
+                <span class="tcnn-box__eyebrow">Síntese Diagnóstica &amp; Evolução do Modelo</span>
+                <span class="tcnn-box__title">EVI2 separa lavoura do resto — não separa isoladamente o componente arbóreo</span>
+              </span>
+              <span class="tcnn-box__chev">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </span>
+            </button>
+            <div class="tcnn-box__panel">
+              <div class="tcnn-box__inner">
+                <div class="tcnn-box__body">
+                  <div class="method-subcard method-subcard--warning" style="margin-bottom: 0.75rem;">
+                    <strong>Diagnóstico Central:</strong> O sinal temporal isolado do EVI2 distingue com consistência lavouras anuais e pastagens (Agricultura, Pastagem e ILP) dos demais sistemas, mas não diferencia isoladamente as classes arbóreas entre si devido à baixa variabilidade sazonal do dossel florestal e ao reduzido tamanho amostral das classes raras.
+                  </div>
+                  <ul class="method-list-styled">
+                    <li><strong>Adensamento Amostral de Classes Raras:</strong> Expansão direcionada do número de talhões e pontos auditados de <strong>ILPF, ILF, Agrofloresta e Silvicultura</strong> para corrigir o severo desbalanceamento de suporte no treinamento supervisionado.</li>
+                    <li><strong>Incorporação de Contexto Espacial e Multibanda:</strong> Avaliação de arquiteturas espaço-temporais e covariáveis de textura/embeddings (como as 64 bandas de <em>Google Satellite Embeddings</em> e bandas SWIR/Red-Edge do Data Cube de 230 bandas) capazes de capturar o arranjo espacial em renques das árvores em sistemas silvipastoris e agrossilvipastoris.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /tcnn-sublist -->
+
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- LIGHTBOX MODAL DE TELA CHEIA PARA OS GRÁFICOS -->
+<div class="tcnn-lightbox" id="tcnn-lightbox" role="dialog" aria-modal="true" aria-label="Visualização ampliada do gráfico">
+  <div class="tcnn-lightbox__content">
+    <button type="button" class="tcnn-lightbox__close" id="tcnn-lightbox-close">Fechar &#10005;</button>
+    <img class="tcnn-lightbox__img" id="tcnn-lightbox-img" src="" alt="">
+    <div class="tcnn-lightbox__caption" id="tcnn-lightbox-caption"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var sublist = document.getElementById('tcnn-sublist');
+  if (!sublist) return;
+  var boxes = Array.prototype.slice.call(sublist.querySelectorAll('.tcnn-box'));
+  var chartBoxes = Array.prototype.slice.call(sublist.querySelectorAll('.tcnn-chart-box'));
+
+  function setBoxOpen(box, open) {
+    box.classList.toggle('is-open', open);
+    var btn = box.querySelector('.tcnn-box__toggle');
+    if (btn) btn.setAttribute('aria-expanded', String(open));
+  }
+
+  function setChartOpen(cbox, open) {
+    cbox.classList.toggle('is-open', open);
+    var btn = cbox.querySelector('.tcnn-chart-box__toggle');
+    if (btn) btn.setAttribute('aria-expanded', String(open));
+  }
+
+  boxes.forEach(function (box) {
+    var btn = box.querySelector('.tcnn-box__toggle');
+    if (btn) {
+      btn.addEventListener('click', function () {
+        setBoxOpen(box, !box.classList.contains('is-open'));
+      });
+    }
+  });
+
+  chartBoxes.forEach(function (cbox) {
+    var btn = cbox.querySelector('.tcnn-chart-box__toggle');
+    var stateSpan = cbox.querySelector('.tcnn-chart-box__state');
+    if (btn) {
+      btn.addEventListener('click', function () {
+        setChartOpen(cbox, !cbox.classList.contains('is-open'));
+      });
+    }
+    if (stateSpan) {
+      stateSpan.addEventListener('click', function () {
+        setChartOpen(cbox, !cbox.classList.contains('is-open'));
+      });
+    }
+  });
+
+  var btnExpand = document.getElementById('tcnn-expand-all');
+  var btnCollapse = document.getElementById('tcnn-collapse-all');
+  if (btnExpand) {
+    btnExpand.addEventListener('click', function () {
+      boxes.forEach(function (b) { setBoxOpen(b, true); });
+      chartBoxes.forEach(function (cb) { setChartOpen(cb, true); });
+    });
+  }
+  if (btnCollapse) {
+    btnCollapse.addEventListener('click', function () {
+      boxes.forEach(function (b) { setBoxOpen(b, false); });
+    });
+  }
+
+  // Lightbox (Tela Cheia ao clicar no botão "Tela Cheia" ou na própria imagem do gráfico)
+  var lightbox = document.getElementById('tcnn-lightbox');
+  var lbImg = document.getElementById('tcnn-lightbox-img');
+  var lbCap = document.getElementById('tcnn-lightbox-caption');
+  var lbClose = document.getElementById('tcnn-lightbox-close');
+
+  function openLightbox(src, caption) {
+    if (!lightbox || !lbImg) return;
+    lbImg.src = src;
+    lbImg.alt = caption || '';
+    if (lbCap) lbCap.textContent = caption || '';
+    lightbox.classList.add('is-active');
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('is-active');
+    if (lbImg) lbImg.src = '';
+  }
+
+  sublist.querySelectorAll('.tcnn-chart-box__zoom').forEach(function (zbtn) {
+    zbtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      openLightbox(zbtn.getAttribute('data-zoom-src'), zbtn.getAttribute('data-zoom-caption'));
+    });
+  });
+
+  sublist.querySelectorAll('.tcnn-fig img').forEach(function (img) {
+    img.addEventListener('click', function () {
+      var capEl = img.parentElement ? img.parentElement.querySelector('figcaption') : null;
+      openLightbox(img.src, capEl ? capEl.textContent : img.alt);
+    });
+  });
+
+  if (lbClose) lbClose.addEventListener('click', closeLightbox);
+  if (lightbox) {
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && lightbox && lightbox.classList.contains('is-active')) {
+      closeLightbox();
+    }
+  });
+})();
+</script>

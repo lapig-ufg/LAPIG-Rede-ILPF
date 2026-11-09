@@ -1,0 +1,22 @@
+title: Mapeamento Nacional de Pastagens com Camada ILPF — Rede ILPF & LAPIG/UFG
+description: Mapeamento Nacional de Pastagens com Camada de Integração (ILPF) — Parceria Rede ILPF e LAPIG/UFG
+baseurl: "/Rede_ILPF_LAPIG"
+url: "https://guilhermeramosvaz.github.io"
+
+markdown: kramdown
+permalink: pretty
+
+exclude:
+  - "*.py"
+  - "Gemfile"
+  - "Gemfile.lock"
+  - "node_modules"
+  - "vendor"
+  - ".sass-cache"
+  - ".jekyll-cache"
+  - "mapas_base"
+  - "documentos_de_base"
+  - ".duckdb"
+  - "scratch"
+  - "validate_jekyll.py"
+  - "scripts"

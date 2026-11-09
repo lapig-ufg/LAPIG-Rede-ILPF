@@ -1,0 +1,88 @@
+<!-- ═══════════════════════════════════════════════════════════════════════
+       PRODUTOS ESTÁTICOS, SCRIPTS & DOWNLOADS (VERSÃO PÚBLICA — SEM PONTOS/POLÍGONOS AMOSTRAIS)
+  ═══════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="produtos-dados" style="padding-top: 1.5rem;">
+  <div class="section__inner">
+
+    <!-- 1. RESUMO DOS PRODUTOS -->
+    <div class="status-card" style="margin-bottom: 2.5rem;">
+      <div class="status-card__info">
+        <span class="agora-pill"><span class="pulso"></span> Entregáveis &amp; Código Aberto</span>
+        <h3>Estatísticas da Classificação Temp_CNN, Documentos do Convênio &amp; Rotinas GEE</h3>
+        <p class="sub">
+          Acesse os dados agregados da superfície de Classificação Supervisionada Temp_CNN (30 m, 26 cenas Sentinel-2 no Cerrado goiano), os relatórios técnicos oficiais do convênio LAPIG/UFG · Rede ILPF e os códigos-fonte em JavaScript e Python utilizados para processar o Data Cube no Google Earth Engine.
+        </p>
+      </div>
+    </div>
+
+    <!-- 2. RELATÓRIOS OFICIAIS, DADOS DA CLASSIFICAÇÃO & SCRIPTS GEE -->
+    <div class="section__eyebrow">Documentos Técnicos Oficiais, Superfícies &amp; Rotinas em Nuvem</div>
+    <h2 class="section__title">Relatórios do Convênio, Estatísticas Temp_CNN e Códigos-Fonte</h2>
+    <p class="section__desc">Documentação técnica formalizada da parceria, síntese espacial da classificação Temp_CNN e scripts abertos executáveis no Google Earth Engine.</p>
+
+    <div class="cards">
+      <!-- ESTATÍSTICAS ESPACIAIS TEMP_CNN -->
+      <div class="card fade-up">
+        <div class="card__eyebrow">26 Cenas Sentinel-2 · 4,52 Mha Classificados</div>
+        <div class="card__title">Estatísticas da Classificação Temp_CNN</div>
+        <p class="card__desc">
+          Arquivo JSON estruturado com os quantitativos de área (ha) e pixels para as 9 classes de uso e integração (Pastagem, Agricultura, ILPF, ILP, IPF, Agrofloresta, ILF, Outros e Silvicultura) por cena orbital MGRS e curvas típicas da mediana mensal de EVI2.
+        </p>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem;">
+          <a class="landscape-action" href="{{ '/assets/cnn_spatial_stats.json' | relative_url }}" download style="padding: 0.45rem 0.9rem; font-size: 0.82rem;">
+            <span>Estatísticas Temp_CNN .JSON (237 KB)</span>
+          </a>
+          <a class="landscape-action landscape-action--secondary" href="{{ '/mapa/' | relative_url }}" style="padding: 0.45rem 0.9rem; font-size: 0.82rem;">
+            <span>Explorar no Mapa Interativo</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- RELATÓRIO ENTREGA 1 -->
+      <div class="card fade-up">
+        <div class="card__eyebrow">Entrega 1 · Documento Oficial</div>
+        <div class="card__title">Relatório da Entrega 1 (Data Cube)</div>
+        <p class="card__desc">
+          Documentação técnica detalhada da geração do Data Cube com 230 bandas espectrais (Sentinel-2 10 m, Cloud Score Plus, 8 índices biofísicos e Satellite Embeddings) e a grade regular de 18.340 tiles.
+        </p>
+        <div style="margin-top: 1rem;">
+          <a class="landscape-action" href="{{ '/assets/produtos/Relatorio_Entrega1_ILPF.docx' | relative_url }}" download style="padding: 0.45rem 0.9rem; font-size: 0.82rem;">
+            <span>Baixar Relatório DOCX (424 KB)</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- PLANO DE TRABALHO -->
+      <div class="card fade-up">
+        <div class="card__eyebrow">Convênio Institucional · Anexo I</div>
+        <div class="card__title">Plano de Trabalho LAPIG · Rede ILPF</div>
+        <p class="card__desc">
+          Instrumento que rege o objeto do projeto de mapeamento nacional de pastagens integradas: metas, metodologia de modelagem supervisionada e cronograma de 12 meses.
+        </p>
+        <div style="margin-top: 1rem;">
+          <a class="landscape-action" href="{{ '/assets/produtos/Plano de Trabalho Lapig - Rede ILPF_v334080.docx' | relative_url }}" download style="padding: 0.45rem 0.9rem; font-size: 0.82rem;">
+            <span>Baixar Plano de Trabalho DOCX (112 KB)</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- SCRIPTS GEE -->
+      <div class="card fade-up">
+        <div class="card__eyebrow">Google Earth Engine · JavaScript &amp; Python</div>
+        <div class="card__title">Scripts do Data Cube &amp; Métricas Espectrais</div>
+        <p class="card__desc">
+          Rotinas computacionais para filtragem de nuvens com Cloud Score Plus, redução sazonal por percentis e cálculo das variáveis biofísicas no GEE.
+        </p>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem;">
+          <a class="landscape-action" href="{{ '/assets/produtos/ilpf_metrics.js' | relative_url }}" download style="padding: 0.45rem 0.9rem; font-size: 0.82rem;">
+            <span>Script GEE .JS (18 KB)</span>
+          </a>
+          <a class="landscape-action landscape-action--secondary" href="{{ '/assets/produtos/ilpf_metrics.py' | relative_url }}" download style="padding: 0.45rem 0.9rem; font-size: 0.82rem;">
+            <span>Script Python .PY (19 KB)</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

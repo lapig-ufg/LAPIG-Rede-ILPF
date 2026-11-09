@@ -1,0 +1,190 @@
+---
+layout: page
+title: Cronograma de Execução & Marcos Contratuais
+page_eyebrow: Planejamento, Fases & Entregas do Convênio (12 Meses)
+page_desc: >-
+  Cronograma cronológico completo do projeto de Mapeamento Nacional de Pastagens com Camada de Integração (ILP, IPF, ILF e ILPF) em resolução de 10 m (Parceria LAPIG/UFG · Rede ILPF), detalhando marcos contratuais, entregas parciais e o status dos 10 componentes metodológicos.
+---
+
+<section class="section" id="cronograma-completo" style="padding-top: 1.5rem;">
+  <!-- 1. TRILHO HORIZONTAL DE MARCOS -->
+  <div class="status-card" style="margin-bottom: 3rem;">
+    <div class="status-card__info">
+      <span class="agora-pill"><span class="pulso"></span> Onde Estamos</span>
+      <h3>Etapa 2 · Base Amostral Inspecionada &amp; Expansão Fenológica TW-DTW</h3>
+      <p class="sub">
+        <strong>Marco 0</strong> (Mobilização e Definição de Classes) concluído.
+        <strong>Entrega 1</strong> (Data cube de 230 bandas e Grade Brasil de 18.340 tiles no GEE) <strong>entregue e homologada</strong>.
+        <strong>Entrega 2</strong> (Curadoria de 2.115 amostras entre talhões e pontos de campo com séries sazonais de 13 meses de EVI2 e aumento TW-DTW) <strong>em execução ativa</strong>.
+        Próxima entrega: <strong>Entrega 3</strong> (Classificação preliminar nacional 10 m com Random Forest no GEE e pós-processamento espacial).
+      </p>
+      <div class="status-card__actions">
+        <a class="landscape-action" href="{{ '/analise-top3/' | relative_url }}">
+          <span>Explorar Mapa Interativo</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="linha-tempo" aria-label="Linha do tempo dos marcos do convênio">
+      <div class="lt-trilho" id="trilho-page">
+        <div class="lt-prog" id="prog-page" style="width: 45%;"></div>
+      </div>
+      <div class="lt-legenda">
+        <span class="l-ok">Concluído / Entregue</span>
+        <span class="l-ag">Atual / Em Execução</span>
+        <span class="l-fu">Previsto / Próximas Fases</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. MACRO-ETAPAS CONTRATUAIS DO CONVÊNIO -->
+  <div class="section__eyebrow">Macro-Workflow &amp; Etapas Contratuais</div>
+  <h2 class="section__title">Seis Etapas do Convênio LAPIG–UFG &amp; Rede ILPF</h2>
+  <p class="section__desc">
+    Cada etapa consolida produtos técnicos para subsidiar produtores rurais, o setor corporativo, pesquisadores da Embrapa e políticas públicas do agronegócio sustentável.
+  </p>
+
+  <div class="produtos-grid" style="margin-top: 1.5rem; margin-bottom: 3.5rem;">
+    <div class="prod-item">
+      <b>M0</b>
+      <span><strong>Mobilização &amp; Alinhamento (Mês 0):</strong> Contrato assinado, harmonização do dicionário de classes de integração, reuniões de alinhamento com a Rede ILPF e cronograma operacional (Concluído).</span>
+    </div>
+    <div class="prod-item">
+      <b>E1</b>
+      <span><strong>Data Cube Pronto &amp; Variáveis Limpas (Meses 1–3):</strong> Cubo com 230 bandas Int16, Cloud Score Plus, derivadas biofísicas, Satellite Embeddings e 18.340 tiles processados via GEE (Concluído).</span>
+    </div>
+    <div class="prod-item prod-item--active">
+      <b>E2</b>
+      <span><strong>Base Amostral Curada &amp; Expansão TW-DTW (Meses 2–7):</strong> 2.115 amostras inspecionadas (1.267 talhões rurais em polígonos + 848 pontos de campo), séries sazonais de 13 meses de EVI2 e aumento amostral com TW-DTW (Em Execução).</span>
+    </div>
+    <div class="prod-item">
+      <b>E3</b>
+      <span><strong>Versões Iniciais do Mapa &amp; Pós-Processamento (Meses 6–9):</strong> Treinamento de ensembles Random Forest no GEE, eliminação de ruído sal e pimenta (10 m) e consistência temporal MapBiomas (Previsto).</span>
+    </div>
+    <div class="prod-item">
+      <b>E4</b>
+      <span><strong>Validação Rigorosa &amp; Integração Atlas (Meses 7–10):</strong> Matriz de confusão cega, métricas de exatidão (precision, recall, F1-score por sistema), mapa de incerteza e integração ao Atlas das Pastagens (Previsto).</span>
+    </div>
+    <div class="prod-item">
+      <b>E5</b>
+      <span><strong>Capacitação Técnica &amp; Entrega Final (Meses 10–12):</strong> Workshop presencial de capacitação de 1 semana para a equipe da Rede ILPF, ajustes pós-feedback e entrega dos dados abertos (Previsto).</span>
+    </div>
+  </div>
+
+  <!-- 3. RASTREAMENTO DETALHADO DOS 10 COMPONENTES TÉCNICOS -->
+  <div style="margin-top: 4rem;">
+    <div class="section__eyebrow">Acompanhamento Técnico Granular</div>
+    <h2 class="section__title">Status dos 10 Componentes Metodológicos</h2>
+    <p class="section__desc">
+      Detalhamento dos componentes analíticos estabelecidos no Plano de Trabalho e documentados no Relatório da Entrega 1 da parceria LAPIG/UFG e Rede ILPF.
+    </p>
+
+    <div class="timeline" style="margin-top: 2rem;">
+      <div class="timeline__item done">
+        <div class="timeline__date">Componente 01 · Status: Concluído / Entregue</div>
+        <div class="timeline__title">1. Estruturação do Data Cube Multibanda (230 Bandas Int16)</div>
+        <div class="timeline__desc">Processamento em larga escala na nuvem Google Earth Engine a partir de imagens Sentinel-2 Harmonized (L2A, 10 m), cálculo de 8 índices espectrais (NDVI, NDWI, CAI, CRI1, ARI_1, RGR, PSRI, SATVI) e derivação de 9 redutores temporais da safra chuvosa.</div>
+      </div>
+
+      <div class="timeline__item done">
+        <div class="timeline__date">Componente 02 · Status: Concluído / Entregue</div>
+        <div class="timeline__title">2. Grade Regular Territorial do Brasil (18.340 Tiles de 0.2°)</div>
+        <div class="timeline__desc">Segmentação sistemática de todo o território nacional em malha regular de 0.2° × 0.2° (asset <code>grade_br</code>), viabilizando paralelização distribuída em nuvem, exportação tileada e interoperabilidade cartográfica.</div>
+      </div>
+
+      <div class="timeline__item done">
+        <div class="timeline__date">Componente 03 · Status: Concluído / Entregue</div>
+        <div class="timeline__title">3. Incorporação de Embeddings Satelitais de Deep Learning</div>
+        <div class="timeline__desc">Extração das 64 bandas do <code>GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL</code> para enriquecer o espaço latente de atributos com representações espaciais profundas aprendidas por redes neurais e transformers.</div>
+      </div>
+
+      <div class="timeline__item current">
+        <div class="timeline__date">Componente 04 · Status: Em Execução Ativa</div>
+        <div class="timeline__title">4. Curadoria da Base Amostral de Campo e Talhões Rurais (2.115 Amostras)</div>
+        <div class="timeline__desc">Harmonização e auditoria espacial de 1.267 talhões poligonais e 848 pontos de campo inspecionados por especialistas da Rede ILPF, Embrapa e LAPIG, associados a séries sazonais de 13 meses de EVI2.</div>
+      </div>
+
+      <div class="timeline__item current">
+        <div class="timeline__date">Componente 05 · Status: Em Execução Ativa</div>
+        <div class="timeline__title">5. Data Augmentation Fenológico com TW-DTW</div>
+        <div class="timeline__desc">Aplicação do algoritmo <em>Time-Weighted Dynamic Time Warping</em> (TW-DTW) para minerar perfis fenológicos análogos nas séries temporais do Sentinel-2, expandindo o volume amostral de treino sem introduzir viés geográfico local.</div>
+      </div>
+
+      <div class="timeline__item future">
+        <div class="timeline__date">Componente 06 · Status: Previsto</div>
+        <div class="timeline__title">6. Modelagem Supervisionada com Ensembles Random Forest no GEE</div>
+        <div class="timeline__desc">Treinamento distribuído de classificadores Random Forest calibrados separadamente por bioma e macrorregião, explorando as 230 variáveis preditoras do Data Cube.</div>
+      </div>
+
+      <div class="timeline__item future">
+        <div class="timeline__date">Componente 07 · Status: Previsto</div>
+        <div class="timeline__title">7. Pós-Processamento Morfológico &amp; Consistência Histórica MapBiomas</div>
+        <div class="timeline__desc">Eliminação de ruídos espúrios ("sal e pimenta") em resolução de 10 m, filtragem de transições com a série histórica da Coleção 2 beta do MapBiomas e unificação de manchas contínuas com área mínima cartográfica (~0,1 ha).</div>
+      </div>
+
+      <div class="timeline__item future">
+        <div class="timeline__date">Componente 08 · Status: Previsto</div>
+        <div class="timeline__title">8. Avaliação Cega de Acurácia &amp; Incerteza Espacializada</div>
+        <div class="timeline__desc">Validação independente sobre amostras de teste cegas, cálculo de Matriz de Confusão, Acurácia Global, Coeficiente Kappa, Precision, Recall e F1-Score por classe de integração, além de mapa de incerteza por pixel.</div>
+      </div>
+
+      <div class="timeline__item future">
+        <div class="timeline__date">Componente 09 · Status: Previsto</div>
+        <div class="timeline__title">9. Integração Nativa ao Atlas das Pastagens &amp; Aplicativo Interativo GEE</div>
+        <div class="timeline__desc">Publicação pública da camada temática nacional no geoportal do Atlas das Pastagens (LAPIG/UFG) e disponibilização de aplicativo interativo em nuvem no Google Earth Engine.</div>
+      </div>
+
+      <div class="timeline__item future">
+        <div class="timeline__date">Componente 10 · Status: Previsto</div>
+        <div class="timeline__title">10. Capacitação Técnica &amp; Transferência de Tecnologia (Workshop 1 Semana)</div>
+        <div class="timeline__desc">Realização de evento presencial de capacitação técnica com duração de 1 semana para a equipe técnica da Rede ILPF, cobrindo uso dos dados, manipulação do Data Cube no GEE e protocolos de monitoramento contínuo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  var inicio = "2026-05-01", fim = "2027-04-30";
+  var marcos = [
+    { id: "M0", rot: "Mobilização", data: "2026-05-15", st: "ok" },
+    { id: "E1", rot: "Entrega 1 (Data Cube)", data: "2026-07-30", st: "ok" },
+    { id: "E2", rot: "Entrega 2 (Amostras TW-DTW)", data: "2026-11-15", st: "ag" },
+    { id: "E3", rot: "Entrega 3 (Mapa Quase Final)", data: "2027-01-30", st: "fu", cima: true },
+    { id: "E4", rot: "Entrega 4 (Validação & Atlas)", data: "2027-03-15", st: "fu" },
+    { id: "E5", rot: "Entrega 5 (Capacitação / Final)", data: "2027-04-30", st: "fu", cima: true }
+  ];
+
+  var tr = document.getElementById("trilho-page");
+  var pr = document.getElementById("prog-page");
+  if (!tr || !pr) return;
+
+  var t0 = +new Date(inicio + "T12:00:00"), t1 = +new Date(fim + "T12:00:00");
+  var hoje = Date.now();
+  var pos = function(d) {
+    return Math.max(0, Math.min(100, (+new Date(d + "T12:00:00") - t0) / (t1 - t0) * 100));
+  };
+  var ph = Math.max(0, Math.min(100, (hoje - t0) / (t1 - t0) * 100));
+  pr.style.width = ph.toFixed(1) + "%";
+
+  tr.insertAdjacentHTML("beforeend", '<div class="lt-hoje" style="left:' + ph.toFixed(1) + '%">Hoje</div>');
+  tr.insertAdjacentHTML("beforeend", '<div class="marco agora" style="left:' + ph.toFixed(1) + '%" title="Data Atual"></div>');
+
+  var fmt = function(d) {
+    var dt = new Date(d + "T12:00:00");
+    return dt.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
+  };
+
+  marcos.forEach(function(m) {
+    var x = pos(m.data).toFixed(1);
+    tr.insertAdjacentHTML(
+      "beforeend",
+      '<div class="marco ' + m.st + '" style="left:' + x + '%" title="' + m.rot + '">' + (m.st === "ok" ? "✓" : "") + '</div>' +
+      '<div class="marco-rot' + (m.cima ? " cima" : "") + '" style="left:' + x + '%"><b>' + m.id + '</b>' + fmt(m.data) + '</div>'
+    );
+  });
+})();
+</script>

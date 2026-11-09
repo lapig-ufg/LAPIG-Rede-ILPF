@@ -1,0 +1,325 @@
+<!-- ═══════════════════════════════════════════════════════
+       VISUALIZATIONS — INTERACTIVE MAP (CAMADAS & CLASSIFICAÇÃO TEMP_CNN)
+       Versão pública focada exclusivamente nas camadas raster e filtros da Temp_CNN
+  ═══════════════════════════════════════════════════════ -->
+<section class="section--alt reveal" id="visualizacoes" style="padding-top: 1.5rem;">
+  <div class="section__inner">
+    <div class="map-viz" style="margin-top: 0;">
+      <!-- MAP WRAPPER -->
+      <div class="map-container">
+        <div id="map-amostras"></div>
+        
+        <!-- MAP CONTROLS OVERLAY -->
+        <div class="map-controls-overlay">
+          <button class="map-btn map-btn--reset" id="map-focus-cnn" title="Centralizar na região da Classificação Temp_CNN (Cerrado Goiano)">
+            ⟲ Cerrado (Temp_CNN)
+          </button>
+          <button class="map-btn map-btn--reset" id="map-reset" title="Centralizar na visão geral do Brasil">
+            ⟲ Brasil
+          </button>
+          <button class="map-btn map-btn--draw" id="btn-draw-rect" title="Desenhar retângulo para calcular áreas da Classificação Temp_CNN na região selecionada">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 4px;">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            </svg>
+            Seleção em Caixa
+          </button>
+          <button class="map-btn map-btn--clear-rect" id="btn-clear-rect" title="Remover retângulo de seleção" style="display: none;">
+            Limpar Seleção
+          </button>
+          <button class="map-btn map-btn--cnn active" id="btn-toggle-cnn" title="Ligar/desligar camada raster de Classificação Temp_CNN em 30 m (Sentinel-2 2025/2026)" style="background: rgba(60, 77, 10, 0.95); color: #fff;">
+            Classificação Temp_CNN (30m)
+          </button>
+          <button class="map-btn" id="btn-toggle-mgrs" title="Exibir/ocultar limites das 26 cenas Sentinel-2 (MGRS) classificadas">
+            Grade Cenas S2 (26)
+          </button>
+          <button class="map-btn map-btn--raster active" id="btn-toggle-raster" title="Ligar/desligar camada raster MapBiomas em alta resolução (75 m)" style="background: rgba(45, 106, 63, 0.9); color: #fff;">
+            Raster MapBiomas 75m (2025)
+          </button>
+          <select class="map-btn map-select" id="map-basemap-select" title="Trocar imagem base do mapa">
+            <option value="satellite" selected>Satélite (Esri World Imagery)</option>
+            <option value="osm">OpenStreetMap</option>
+          </select>
+        </div>
+
+        <div class="map-selection-hint" id="map-selection-hint" style="display: none;">
+          <span><strong>Modo de Seleção Espacial Ativo:</strong> Clique e arraste no mapa para filtrar as estatísticas da Classificação Temp_CNN na área demarcada.</span>
+        </div>
+
+        <!-- STACK DE LEGENDAS RASTER NO MAPA -->
+        <div class="map-legends-stack">
+          <!-- LEGENDA RASTER CLASSIFICAÇÃO CNN -->
+          <div class="map-raster-legend map-cnn-legend" id="map-cnn-legend" style="display: block; width: 400px; max-width: calc(100vw - 32px); padding: 7px 12px; box-sizing: border-box;">
+            <div class="map-raster-legend__title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Classificação Temp_CNN · 30m (Sentinel-2 2025/2026)</div>
+            <div class="map-cnn-legend__items" style="display: grid; grid-template-columns: 100px 115px 135px; column-gap: 10px; row-gap: 3px; margin-top: 4px;">
+              <span class="mrl-item"><span class="mrl-swatch" style="background:#eddc4b;"></span>1 - Pastagem</span>
+              <span class="mrl-item"><span class="mrl-swatch" style="background:#2fc912;"></span>2 - Agricultura</span>
+              <span class="mrl-item"><span class="mrl-swatch" style="background:#3c4d0a;"></span>3 - ILPF</span>
+              <span class="mrl-item"><span class="mrl-swatch" style="background:#b2f323;"></span>4 - ILP</span>
+              <span class="mrl-item"><span class="mrl-swatch" style="background:#f02907;"></span>5 - IPF</span>
+              <span class="mrl-item"><span class="mrl-swatch" style="background:#d67910;"></span>6 - Agrofloresta</span>
+              <span class="mrl-item"><span class="mrl-swatch" style="background:#bcb915;"></span>7 - ILF</span>
+              <span class="mrl-item"><span class="mrl-swatch" style="background:#718096;"></span>8 - Outros</span>
+              <span class="mrl-item"><span class="mrl-swatch" style="background:#1b4332;"></span>9 - Silvicultura</span>
+            </div>
+          </div>
+
+          <!-- LEGENDA RASTER MAPBIOMAS NO MAPA -->
+          <div class="map-raster-legend" id="map-raster-legend" style="width: 400px; max-width: calc(100vw - 32px); padding: 7px 12px; box-sizing: border-box;">
+            <div class="map-raster-legend__title" id="mrl-title">MapBiomas 75m (2025)</div>
+            <div class="map-raster-legend__items" style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <span class="mrl-item"><span class="mrl-swatch" style="background:#665a3a;"></span>Floresta</span>
+              <span class="mrl-item"><span class="mrl-swatch" style="background:#ffd966;"></span>Pastagem</span>
+              <span class="mrl-item"><span class="mrl-swatch" style="background:#e974ed;"></span>Agricultura</span>
+              <span class="mrl-item"><span class="mrl-swatch" style="background:#ffefc3;"></span>Mosaico</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL LATERAL DE FILTROS E MÉTRICAS DA CLASSIFICAÇÃO TEMP_CNN -->
+      <div class="map-panel">
+        <!-- Counter Card -->
+        <div class="map-panel__card map-counter">
+          <div class="map-counter__number" id="counter-number">4.519.877 ha</div>
+          <div class="map-counter__label" id="counter-label">Área Classificada Visível (Temp_CNN)</div>
+          <div class="map-counter__sub" id="counter-sub">1.492.107 ha em Sistemas Integrados (33,01%) · 26 cenas S2</div>
+        </div>
+
+        <!-- UNIFIED FILTER CARD (100% EM CIMA DA CLASSIFICAÇÃO TEMP_CNN & CAMADAS) -->
+        <div class="map-panel__card filter-card">
+          <div class="filter-card__header">
+            <div class="filter-card__title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+              </svg>
+              Filtros da Classificação Temp_CNN
+              <span class="filter-badge" id="active-filters-count">Todas (9)</span>
+            </div>
+            <button type="button" class="btn-clear-filters" id="btn-clear-filters" title="Redefinir todos os filtros da classificação">
+              Limpar Filtros
+            </button>
+          </div>
+
+          <!-- SELETOR RÁPIDO DE MACROGRUPOS DA CLASSIFICAÇÃO TEMP_CNN -->
+          <div class="dataset-select-group">
+            <label class="filter-label">Recorte Temático (Macrogrupos Temp_CNN)</label>
+            <div class="dataset-chips" style="grid-template-columns: repeat(2, 1fr);">
+              <button type="button" class="dataset-chip active" data-macro="all">
+                <strong>Todas as Classes</strong>
+                <small>Classes 1 a 9 (4,52 Mha)</small>
+              </button>
+              <button type="button" class="dataset-chip" data-macro="integrated">
+                <strong>Sistemas Integrados</strong>
+                <small>ILP, IPF, ILPF, ILF, SAF</small>
+              </button>
+              <button type="button" class="dataset-chip" data-macro="agropastoral">
+                <strong>Lavoura &amp; Pasto</strong>
+                <small>Classes 1, 2 e 4</small>
+              </button>
+              <button type="button" class="dataset-chip" data-macro="arboreal">
+                <strong>Comp. Arbóreo</strong>
+                <small>Classes 3, 5, 6, 7 e 9</small>
+              </button>
+            </div>
+          </div>
+
+          <!-- FILTRO POR CENA SENTINEL-2 (MGRS) E OPACIDADE -->
+          <div class="filter-search-group" style="padding: 0.75rem 1rem 0.5rem 1rem;">
+            <label class="filter-label" for="tile-select">Cena Sentinel-2 Classificada (MGRS)</label>
+            <div class="search-container" style="margin-top: 0.25rem;">
+              <select id="tile-select" class="search-input" style="cursor: pointer; font-weight: 600;">
+                <option value="all">Todas as 26 Cenas MGRS (Cerrado Goiano)</option>
+              </select>
+            </div>
+            <div style="margin-top: 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem;">
+              <label for="cnn-opacity-range" style="font-size: 0.72rem; font-weight: 700; color: var(--color-muted); text-transform: uppercase;">Opacidade Temp_CNN:</label>
+              <input type="range" id="cnn-opacity-range" min="15" max="100" value="92" style="flex: 1; accent-color: #18362d; cursor: pointer;">
+              <span id="cnn-opacity-val" style="font-size: 0.74rem; font-weight: 700; color: var(--color-fg); min-width: 2.4rem; text-align: right;">92%</span>
+            </div>
+          </div>
+
+          <!-- ACCORDION SECTIONS -->
+          <div class="filter-accordion">
+            <!-- 1. CLASSES DA CLASSIFICAÇÃO TEMP_CNN (1 A 9) -->
+            <div class="filter-item open">
+              <button type="button" class="filter-item__header" data-target="filter-body-classes">
+                <span>Classes da Classificação Temp_CNN (1 a 9)</span>
+                <span class="filter-item__icon">▾</span>
+              </button>
+              <div class="filter-item__body" id="filter-body-classes">
+                <div style="font-size: 0.71rem; color: var(--color-muted); margin-bottom: 0.45rem; line-height: 1.35;">
+                  Marque ou desmarque as classes para filtrar dinamicamente os pixels exibidos no mapa e recalcular as métricas:
+                </div>
+                <div class="filter-classes-actions">
+                  <button type="button" class="btn-toggle-all" id="btn-toggle-all">Desmarcar Todos</button>
+                </div>
+                <ul class="filter-list" id="filter-list">
+                  <!-- Preenchido via JavaScript -->
+                </ul>
+              </div>
+            </div>
+
+            <!-- 2. ANO DA SÉRIE MAPBIOMAS DE FUNDO (2020 a 2025) -->
+            <div class="filter-item open">
+              <button type="button" class="filter-item__header" data-target="filter-body-mb-year">
+                <span>Camada de Contexto: Ano MapBiomas (75m)</span>
+                <span class="filter-item__icon">▾</span>
+              </button>
+              <div class="filter-item__body" id="filter-body-mb-year">
+                <div style="font-size: 0.72rem; color: var(--color-muted); margin-bottom: 0.4rem; line-height: 1.3;">
+                  Alterne o ano do raster nacional do MapBiomas para comparação histórica sob a camada Temp_CNN:
+                </div>
+                <div class="year-chips" id="mb-year-chips-container">
+                  <button type="button" class="mb-year-chip active" data-mbyear="2025">2025 (Alta Res. 75m)</button>
+                  <button type="button" class="mb-year-chip" data-mbyear="2024">2024</button>
+                  <button type="button" class="mb-year-chip" data-mbyear="2023">2023</button>
+                  <button type="button" class="mb-year-chip" data-mbyear="2022">2022</button>
+                  <button type="button" class="mb-year-chip" data-mbyear="2021">2021</button>
+                  <button type="button" class="mb-year-chip" data-mbyear="2020">2020</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CURVA FENOLÓGICA TÍPICA DE EVI2 POR CLASSE DA TEMP_CNN -->
+        <div class="map-panel__card chart-card evi2-card" id="card-evi2-class">
+          <div class="evi2-header">
+            <div class="map-panel__title" style="font-size: 0.86rem; font-weight: 700; color: var(--color-ink); line-height: 1.25;">Assinatura Mediana Mensal do EVI2</div>
+            <div style="font-size: 0.70rem; color: var(--color-muted); margin-bottom: 0.4rem;">Perfil fenológico típico da classe na Temp_CNN (13 meses)</div>
+            
+            <div class="evi2-select-control">
+              <span class="evi2-select-icon" aria-hidden="true">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 3v18h18"></path>
+                  <path d="m19 9-5 5-4-4-3 3"></path>
+                </svg>
+              </span>
+              <select id="evi2-class-select" class="evi2-select-input" aria-label="Selecione a classe para visualizar a curva fenológica de EVI2">
+                <option value="Pastagem">1 - Pastagem</option>
+                <option value="Agricultura">2 - Agricultura</option>
+                <option value="ILPF">3 - ILPF (Lavoura-Pecuária-Floresta)</option>
+                <option value="ILP" selected>4 - ILP (Lavoura-Pecuária)</option>
+                <option value="IPF">5 - IPF (Pecuária-Floresta)</option>
+                <option value="Agrofloresta">6 - Agrofloresta</option>
+                <option value="ILF">7 - ILF (Lavoura-Floresta)</option>
+                <option value="Outros">8 - Outros</option>
+                <option value="Silvicultura">9 - Silvicultura</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="evi2-stats-grid" id="evi2-stats-container">
+            <div class="evi2-stat-card" title="Média Anual da Mediana do EVI2">
+              <span class="evi2-stat-label">Média Anual</span>
+              <span class="evi2-stat-val" id="evi2-stat-mean">—</span>
+              <span class="evi2-stat-sub">x̄ anual</span>
+            </div>
+            <div class="evi2-stat-card" title="Amplitude Sazonal (Máximo - Mínimo)">
+              <span class="evi2-stat-label">Amplitude</span>
+              <span class="evi2-stat-val" id="evi2-stat-amp">—</span>
+              <span class="evi2-stat-sub">Δ (Máx - Mín)</span>
+            </div>
+            <div class="evi2-stat-card" title="Pico Máximo de Vigor Vegetativo">
+              <span class="evi2-stat-label">Pico Máx.</span>
+              <span class="evi2-stat-val" id="evi2-stat-max">—</span>
+              <span class="evi2-stat-sub" id="evi2-stat-max-month">Ápice</span>
+            </div>
+            <div class="evi2-stat-card" title="Mínimo Sazonal (Período Seco)">
+              <span class="evi2-stat-label">Mínimo Saz.</span>
+              <span class="evi2-stat-val" id="evi2-stat-min">—</span>
+              <span class="evi2-stat-sub" id="evi2-stat-min-month">Seca</span>
+            </div>
+          </div>
+
+          <div class="chart-container" style="height: 165px; margin-top: 0.45rem;">
+            <canvas id="chart-evi2"></canvas>
+          </div>
+        </div>
+
+        <!-- GRÁFICO DE DISTRIBUIÇÃO DE ÁREA POR CLASSE (TEMP_CNN) -->
+        <div class="map-panel__card chart-card">
+          <div class="chart-header">
+            <div class="map-panel__title" id="chart-title">Área Classificada por Classe (ha)</div>
+          </div>
+          <div class="chart-container">
+            <canvas id="chart-classes"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="map-caption" id="map-caption">
+      Superfície temática da <strong>Classificação Supervisionada Temp_CNN (30 m, Sentinel-2 Safra 2025/2026)</strong> sobre o Cerrado goiano (26 cenas MGRS · 4,52 milhões de hectares classificados), integrada ao mosaico nacional do MapBiomas (75 m) e imagens orbitais Esri World Imagery.
+      Utilize os filtros laterais para isolar visualmente classes específicas no mapa, selecionar cenas Sentinel-2 ou demarcar sub-regiões com a ferramenta de seleção em caixa.
+    </p>
+
+    <!-- TABELA SÍNTESE EXECUTIVA POR CLASSE DA CLASSIFICAÇÃO TEMP_CNN -->
+    <div class="overlap-table-container" id="class-summary-container" style="margin-bottom: 1.5rem;">
+      <div class="overlap-table-header">
+        <h3>Síntese de Área &amp; Métricas EVI2 por Classe da Classificação Temp_CNN</h3>
+        <small>Consolidado dinâmico da superfície classificada conforme os filtros de classe, cena MGRS ou caixa espacial ativa.</small>
+      </div>
+      <table class="overlap-table">
+        <thead>
+          <tr>
+            <th>Cód.</th>
+            <th>Classe Temp_CNN</th>
+            <th>Grupo Fenológico</th>
+            <th style="text-align:right;">Pixels Classificados</th>
+            <th style="text-align:right;">Área Mapeada (ha)</th>
+            <th style="text-align:right;">Participação (%)</th>
+            <th style="text-align:right;">Média da Mediana EVI2 (x̄)</th>
+            <th style="text-align:right;">Amplitude Sazonal EVI2 (Δ)</th>
+          </tr>
+        </thead>
+        <tbody id="class-summary-tbody">
+          <!-- preenchido via JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TABELA DE CENAS SENTINEL-2 (MGRS) DA CLASSIFICAÇÃO TEMP_CNN -->
+    <div class="overlap-table-container" id="overlap-table-container">
+      <div class="overlap-table-header">
+        <h3>Cenas Sentinel-2 (MGRS) na Região Selecionada (<span id="table-count">26</span> cenas ativas)</h3>
+        <small>Distribuição de área (em hectares) das classes da Temp_CNN em cada cena orbital MGRS do Cerrado goiano.</small>
+      </div>
+      <table class="overlap-table">
+        <thead id="overlap-thead">
+          <tr>
+            <th>Cena MGRS</th>
+            <th style="text-align:right;">Área Visível (ha)</th>
+            <th style="text-align:right;">1 - Pastagem (ha)</th>
+            <th style="text-align:right;">4 - ILP (ha)</th>
+            <th style="text-align:right;">2 - Agricultura (ha)</th>
+            <th style="text-align:right;">5 - IPF (ha)</th>
+            <th style="text-align:right;">3 - ILPF (ha)</th>
+            <th style="text-align:right;">6/7/9 - Demais Arb. (ha)</th>
+            <th style="text-align:right;">% Integração</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody id="overlap-tbody">
+          <!-- preenchido via JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BOTÃO DE DOWNLOAD DO CSV CONSOLIDADO DA CLASSIFICAÇÃO TEMP_CNN -->
+    <div class="overlap-table-actions" id="overlap-table-actions" style="margin-top: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding: 0.9rem 1.25rem; background: #ffffff; border: 1px solid var(--color-rule); border-radius: 8px; box-shadow: var(--shadow-sm);">
+      <div class="overlap-table-actions__info" style="font-family: var(--font-sans); font-size: 0.88rem; color: #475569;">
+        <span>Recorte ativo: <strong id="total-filtered-count" style="color: var(--color-fg);">26 cenas · 9 classes</strong> na Classificação Temp_CNN</span>
+        <span style="display: block; font-size: 0.76rem; color: var(--color-muted); margin-top: 2px;">Exporta a tabela consolidada de áreas (ha), contagem de pixels e métricas EVI2 por classe e por cena MGRS conforme os filtros ativos.</span>
+      </div>
+      <button type="button" class="btn-download-csv" id="btn-download-filtered-csv" style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--color-accent); color: #ffffff; border: 1px solid rgba(0,0,0,0.1); padding: 0.55rem 1.2rem; border-radius: 6px; font-family: var(--font-sans); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.2s ease;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span>Exportar Estatísticas Temp_CNN (CSV)</span>
+      </button>
+    </div>
+  </div>
+</section>

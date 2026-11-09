@@ -1,0 +1,440 @@
+<!-- ═══════════════════════════════════════════════════════════════════════
+       METODOLOGIA — FLOWCHART CRONOLÓGICO EXPANSÍVEL (PADRÃO WRI/LAPIG)
+       Segue as entregas contratuais da parceria LAPIG/UFG e Rede ILPF
+       Fontes: Relatório Entrega 1 (2026), Plano de Trabalho e scripts GEE
+  ═══════════════════════════════════════════════════════════════════════ -->
+<section class="section--alt reveal method-section" id="metodologia">
+  <div class="section__inner">
+    <div class="section__eyebrow">Arcabouço Metodológico &amp; Avanço Técnico</div>
+    <h2 class="section__title">Pipeline Metodológico do Mapeamento</h2>
+    <p class="section__desc">
+      Fluxo metodológico cronológico do projeto, estruturado conforme as entregas do convênio entre o Laboratório de Processamento de Imagens e Geoprocessamento (LAPIG/UFG) e a Associação Rede ILPF.
+      Combina sensoriamento remoto óptico de alta resolução (Sentinel-2 10 m), mascaramento de nuvens com Cloud Score Plus, derivadas biofísicas, embeddings satelitais de deep learning, cubo de dados multidimensional (230 bandas), base amostral inspecionada e modelagem supervisionada com redes convolucionais temporais (Temp_CNN).
+    </p>
+
+    <!-- BANNER DE ESCOPO E STATUS -->
+    <div class="method-scope-banner">
+      <div class="method-scope-banner__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+          <line x1="12" y1="9" x2="12" y2="13"></line>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+      </div>
+      <div class="method-scope-banner__content">
+        <strong>Status Atual do Projeto (Entrega 1 Concluída · Entregas 2 a 4 em Execução):</strong>
+        O Data Cube multibanda com 230 variáveis espectro-temporais (Sentinel-2 10 m, 8 índices biofísicos, Cloud Score Plus e 64 bandas de Satellite Embeddings) e a Grade Brasil de 18.340 tiles de 0.2° estão totalmente consolidados na nuvem Google Earth Engine.
+        A Base Amostral Inspecionada (polígonos e pontos de campo com séries de 13 meses da mediana mensal de EVI2) e a Modelagem Supervisionada (Temp_CNN) encontram-se em execução ativa; a expansão amostral de classes raras, o acoplamento de contexto espacial e a validação independente no Atlas das Pastagens constituem as próximas etapas do cronograma.
+      </div>
+    </div>
+
+    <!-- TOOLBAR: LEGENDA DE STATUS + BOTÕES DE EXPANDIR / RECOLHER -->
+    <div class="flow-toolbar">
+      <div class="flow-legend">
+        <span class="flow-legend__title">Status das Entregas</span>
+        <span class="flow-legend__item"><span class="flow-dot flow-dot--done"></span>Concluído / Entregue</span>
+        <span class="flow-legend__item"><span class="flow-dot flow-dot--prelim"></span>Em Execução Ativa</span>
+        <span class="flow-legend__item"><span class="flow-dot flow-dot--plan"></span>Próxima Etapa / Planejado</span>
+      </div>
+      <div class="flow-toolbar__actions">
+        <span class="flow-toolbar__hint">Clique em cada bloco para ver ou ocultar os detalhes técnicos</span>
+        <button type="button" class="flow-btn" id="flow-expand-all">Expandir Todos</button>
+        <button type="button" class="flow-btn" id="flow-collapse-all">Recolher Todos</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         FLOWCHART — BLOCOS CRONOLÓGICOS E EXPANSÍVEIS
+         ═══════════════════════════════════════════════════════ -->
+    <div class="flow" id="method-flow">
+
+      <!-- DIVISOR 1: ENTREGA 1 (CONCLUÍDO) -->
+      <div class="flow__divider">
+        <span>Entrega 1 · Pré-processamento, Extração de Variáveis &amp; Data Cube GEE (Concluído)</span>
+      </div>
+
+      <!-- LINHA 1: ETAPAS 01 & 02 -->
+      <div class="flow__row">
+
+        <!-- ETAPA 01: PRÉ-PROCESSAMENTO ESPECTRAL & FILTRAGEM DE NUVENS -->
+        <div class="flow__col">
+          <article class="fnode fnode--input" id="step-s2">
+            <button class="fnode__toggle" type="button" aria-expanded="false" aria-controls="panel-s2">
+              <span class="fnode__bar">
+                <span class="fnode__num">01</span>
+                <span class="fnode__titles">
+                  <span class="fnode__phase">Fase 1 · Entrada &amp; Correção Espectral</span>
+                  <span class="fnode__title">Pré-processamento &amp; Filtragem de Nuvens</span>
+                </span>
+                <span class="fstatus fstatus--done">Concluído</span>
+                <span class="fnode__chev">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </span>
+              <span class="fnode__summary">
+                <span class="fnode__desc">
+                  Coleções Sentinel-2 Harmonized (L2A) submetidas a mascaramento estrito de nuvens e sombras via Cloud Score Plus, com seleção adaptativa da estação chuvosa por pixel.
+                </span>
+                <span class="fnode__kpis">
+                  <span class="fkpi"><span class="fkpi__v">10 m</span><span class="fkpi__l">Resolução Espacial</span></span>
+                  <span class="fkpi"><span class="fkpi__v">CS ≥ 0.50</span><span class="fkpi__l">Limiar Cloud Score</span></span>
+                  <span class="fkpi"><span class="fkpi__v">10 Bandas</span><span class="fkpi__l">Ópticas Sentinel-2</span></span>
+                </span>
+                <span class="fnode__more">
+                  <span class="is-closed-text">Ver detalhes analíticos ▾</span>
+                  <span class="is-open-text">Recolher detalhes ▴</span>
+                </span>
+              </span>
+            </button>
+            <div class="fnode__panel" id="panel-s2">
+              <div class="fnode__panel-inner">
+                <div class="fnode__body">
+                  <p>
+                    A etapa de pré-processamento segue o <em>Algorithm Theoretical Basis Document</em> (ATBD) aplicado na Coleção 2 (beta) de 10 metros do MapBiomas (item 4.10). 
+                    As imagens são adquiridas a partir da coleção <code>COPERNICUS/S2_HARMONIZED</code>, abrangendo as bandas do visível (B2, B3, B4), red-edge (B5, B6, B7, B8A), infravermelho próximo (B8) e infravermelho de ondas curtas (B11, B12).
+                  </p>
+                  <ul class="method-list-styled">
+                    <li><strong>Mascaramento Cloud Score Plus:</strong> Integração com a coleção <code>GOOGLE/CLOUD_SCORE_PLUS/V1/S2_HARMONIZED</code>, retendo apenas pixels com índice de qualidade <code>cs ≥ 0.50</code> e filtragem de cenas com até 80% de nuvens totais.</li>
+                    <li><strong>Janela Temporal de Safra Agrícola:</strong> Recorte anual adaptativo definido de 1º de julho do ano anterior a 30 de junho do ano seguinte (ex.: <code>2024-07-01</code> a <code>2026-06-30</code> para o ano-base 2025).</li>
+                    <li><strong>Seleção Adaptativa da Estação Chuvosa (Wet Season):</strong> Identificação da época chuvosa realizada por pixel através do percentil 25 do NDVI na série histórica, garantindo contraste biofísico máximo entre culturas temporárias, forrageiras perenes e copas arbóreas.</li>
+                  </ul>
+                  <div class="method-subcard method-subcard--warning">
+                    <strong>Controle de Qualidade Espectral:</strong> A exclusão de observações contaminadas por aerossóis residuais, bordas de nuvens e sombras topográficas assegura que ruídos pontuais não distorçam a assinatura temporal dos sistemas de integração.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+          <div class="fc-fill" aria-hidden="true"></div>
+        </div>
+
+        <!-- ETAPA 02: ÍNDICES BIOFÍSICOS & REDUÇÕES ESTATÍSTICAS -->
+        <div class="flow__col">
+          <article class="fnode fnode--extract" id="step-indices">
+            <button class="fnode__toggle" type="button" aria-expanded="false" aria-controls="panel-indices">
+              <span class="fnode__bar">
+                <span class="fnode__num">02</span>
+                <span class="fnode__titles">
+                  <span class="fnode__phase">Fase 2 · Derivadas Espectrais</span>
+                  <span class="fnode__title">Índices Espectrais &amp; Reduções Temporais</span>
+                </span>
+                <span class="fstatus fstatus--done">Concluído</span>
+                <span class="fnode__chev">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </span>
+              <span class="fnode__summary">
+                <span class="fnode__desc">
+                  Cálculo de 8 índices biofísicos sensíveis a biomassa verde, água, estresse e senescência, com derivação de 9 métricas estatísticas sobre observações da safra.
+                </span>
+                <span class="fnode__kpis">
+                  <span class="fkpi"><span class="fkpi__v">8 Índices</span><span class="fkpi__l">Biofísicos / Pigmentos</span></span>
+                  <span class="fkpi"><span class="fkpi__v">9 Redutores</span><span class="fkpi__l">Estatísticos por Banda</span></span>
+                  <span class="fkpi"><span class="fkpi__v">18 Bandas</span><span class="fkpi__l">Base (10 S2 + 8 Índices)</span></span>
+                </span>
+                <span class="fnode__more">
+                  <span class="is-closed-text">Ver detalhes analíticos ▾</span>
+                  <span class="is-open-text">Recolher detalhes ▴</span>
+                </span>
+              </span>
+            </button>
+            <div class="fnode__panel" id="panel-indices">
+              <div class="fnode__panel-inner">
+                <div class="fnode__body">
+                  <p>
+                    Para discriminar pastagens puras de modalidades de integração (lavoura-pecuária, pecuária-floresta e ILPF), foram selecionados 8 índices espectrais consolidados na literatura internacional de sensoriamento remoto, orientados às diferentes fases de manejo:
+                  </p>
+                  <div class="ftable-wrap">
+                    <table class="ftable">
+                      <thead>
+                        <tr>
+                          <th>Índice</th>
+                          <th>Sensibilidade Biofísica</th>
+                          <th>Relevância Agronômica para ILPF</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><strong>NDVI / NDWI</strong></td>
+                          <td>Vigor fotossintético e conteúdo hídrico no dossel foliar</td>
+                          <td>Separação da biomassa verde ativa de solo exposto e água superficial</td>
+                        </tr>
+                        <tr>
+                          <td><strong>CAI, CRI1, ARI_1</strong></td>
+                          <td>Absorção de celulose, carotenoides e antocianinas</td>
+                          <td>Sensíveis ao estresse hídrico, idade fisiológica e senescência foliar</td>
+                        </tr>
+                        <tr>
+                          <td><strong>PSRI, SATVI, RGR</strong></td>
+                          <td>Senescência acelerada, biomassa seca residual e palhada</td>
+                          <td>Essencial para discriminar etapas de dessecação, colheita e pousio agrícola de pasto perene</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <h4>Métricas e Redutores Estatísticos Temporais (9 por banda)</h4>
+                  <p>
+                    Para cada uma das 18 bandas (10 bandas brutas + 8 índices espectrais), foram calculados sobre as observações da safra chuvosa:
+                    <strong>Mínimo, Máximo, Mediana, Desvio Padrão, Amplitude total, e os Percentis 10, 25, 75 e 90</strong> (totalizando $18 \times 9 = 162$ bandas estatísticas).
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
+          <div class="fc-fill" aria-hidden="true"></div>
+        </div>
+
+      </div>
+
+      <!-- CONECTOR CENTRAL -->
+      <div class="fc-arrow">
+        <span class="fc-arrow__label">Cubo Multidimensional Integrado</span>
+      </div>
+
+      <!-- LINHA 2: ETAPA 03 (DATA CUBE COMPLETO) -->
+      <div class="flow__row">
+
+        <!-- ETAPA 03: CUBO DE DADOS GEE (230 BANDAS) -->
+        <div class="flow__col" style="grid-column: 1 / -1;">
+          <article class="fnode fnode--filter" id="step-datacube">
+            <button class="fnode__toggle" type="button" aria-expanded="false" aria-controls="panel-datacube">
+              <span class="fnode__bar">
+                <span class="fnode__num">03</span>
+                <span class="fnode__titles">
+                  <span class="fnode__phase">Fase 3 · Engenharia de Atributos &amp; Big Data</span>
+                  <span class="fnode__title">Estrutura do Data Cube Multidimensional (230 Bandas Int16)</span>
+                </span>
+                <span class="fstatus fstatus--done">Concluído</span>
+                <span class="fnode__chev">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </span>
+              <span class="fnode__summary">
+                <span class="fnode__desc">
+                  Organização massiva em nuvem no Google Earth Engine (GEE): 230 bandas Int16 combinando índices temporais, textura 3×3, relevo e 64 dimensões do Google Satellite Embedding V1.
+                </span>
+                <span class="fnode__kpis">
+                  <span class="fkpi"><span class="fkpi__v">230 Bandas</span><span class="fkpi__l">Formato Int16 Otimizado</span></span>
+                  <span class="fkpi"><span class="fkpi__v">18.340</span><span class="fkpi__l">Tiles Grade Brasil 0.2°</span></span>
+                  <span class="fkpi"><span class="fkpi__v">64 Bandas</span><span class="fkpi__l">Satellite Embedding V1</span></span>
+                  <span class="fkpi"><span class="fkpi__v">GEE</span><span class="fkpi__l">Processamento Distribuído</span></span>
+                </span>
+                <span class="fnode__more">
+                  <span class="is-closed-text">Ver detalhes analíticos ▾</span>
+                  <span class="is-open-text">Recolher detalhes ▴</span>
+                </span>
+              </span>
+            </button>
+            <div class="fnode__panel" id="panel-datacube">
+              <div class="fnode__panel-inner">
+                <div class="fnode__body">
+                  <p>
+                    Conforme formalizado na <strong>Entrega 1</strong> do convênio e nos scripts técnicos (<code>ilpf_metrics.js</code> e <code>ilpf_metrics.py</code>), todas as variáveis foram empacotadas em um raster tileado de 230 bandas inteiras (Int16) sobre a grade regular brasileira de 18.340 tiles de $0.2^\circ \times 0.2^\circ$:
+                  </p>
+                  <div class="ftable-wrap">
+                    <table class="ftable">
+                      <thead>
+                        <tr>
+                          <th>Grupo de Bandas</th>
+                          <th>Variáveis Integradas</th>
+                          <th>Escala / Tratamento</th>
+                          <th>Total de Bandas</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><strong>Índices Espectrais &amp; Reduções</strong></td>
+                          <td>NDVI, NDWI, CAI, CRI1, ARI_1, RGR, PSRI, SATVI (9 redutores cada)</td>
+                          <td>Multiplicado por 100 (Int16)</td>
+                          <td><strong>72</strong> bandas</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Textura Espacial Focal</strong></td>
+                          <td>Desvio padrão e mediana focal 3×3 sobre o NDVI chuvoso</td>
+                          <td>Multiplicado por 100 (Int16)</td>
+                          <td><strong>2</strong> bandas</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Declividade Topográfica</strong></td>
+                          <td>Declividade do relevo em graus via NASA NASADEM / SRTM</td>
+                          <td>Multiplicado por 100 (Int16)</td>
+                          <td><strong>1</strong> banda</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Google Satellite Embedding V1</strong></td>
+                          <td>Vetores latentes profundos anuais (<code>GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL</code>)</td>
+                          <td>Multiplicado por 100 (Int16)</td>
+                          <td><strong>64</strong> bandas</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Reflectância Bruta Sentinel-2</strong></td>
+                          <td>Blue, Green, Red, RedEdge (1 a 4), NIR, SWIR1, SWIR2 (9 redutores cada)</td>
+                          <td>Escala inteira original L2A</td>
+                          <td><strong>90</strong> bandas</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Elevação Topográfica</strong></td>
+                          <td>Altitude absoluta em metros (NASA NASADEM HGT 001)</td>
+                          <td>Metros inteiros</td>
+                          <td><strong>1</strong> banda</td>
+                        </tr>
+                        <tr class="ftable__total">
+                          <td colspan="3"><strong>TOTAL DE BANDAS EXPORTADAS NO CUBO DE DADOS POR TILE</strong></td>
+                          <td><strong>230 bandas</strong></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="method-subcard method-subcard--warning">
+                    <strong>Eficiência Computacional:</strong> A conversão de ponto flutuante para Int16 com fator de escala 100 reduz o volume em disco em cerca de 50%, permitindo exportação escalonada e processamento rápido das 18.340 quadrículas de todo o território nacional.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+      </div>
+
+      <!-- DIVISOR 2: ENTREGAS 2 A 4 (EM EXECUÇÃO) -->
+      <div class="flow__divider">
+        <span>Entregas 2 a 4 · Base Amostral Inspecionada &amp; Modelagem Supervisionada Temp_CNN (Em Execução)</span>
+      </div>
+
+      <!-- LINHA 3: ETAPA 04 -->
+      <div class="flow__row">
+
+        <!-- ETAPA 04: BASE AMOSTRAL INSPECIONADA -->
+        <div class="flow__col" style="grid-column: 1 / -1;">
+          <article class="fnode fnode--qc" id="step-amostras">
+            <button class="fnode__toggle" type="button" aria-expanded="false" aria-controls="panel-amostras">
+              <span class="fnode__bar">
+                <span class="fnode__num">04</span>
+                <span class="fnode__titles">
+                  <span class="fnode__phase">Fase 4 · Curadoria Amostral &amp; Séries Temporais</span>
+                  <span class="fnode__title">Base Amostral Inspecionada</span>
+                </span>
+                <span class="fstatus fstatus--prelim">Em Execução</span>
+                <span class="fnode__chev">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </span>
+              <span class="fnode__summary">
+                <span class="fnode__desc">
+                  Curadoria de 2.115 feições auditadas (1.267 talhões rurais em polígonos + 848 pontos de campo) e extração de séries sazonais de 13 meses da mediana mensal de EVI2.
+                </span>
+                <span class="fnode__kpis">
+                  <span class="fkpi"><span class="fkpi__v">2.115</span><span class="fkpi__l">Amostras Auditadas</span></span>
+                  <span class="fkpi"><span class="fkpi__v">1.267</span><span class="fkpi__l">Talhões Poligonais</span></span>
+                  <span class="fkpi"><span class="fkpi__v">848</span><span class="fkpi__l">Pontos de Campo</span></span>
+                  <span class="fkpi"><span class="fkpi__v">13 Meses</span><span class="fkpi__l">Série Mediana EVI2</span></span>
+                </span>
+                <span class="fnode__more">
+                  <span class="is-closed-text">Ver detalhes analíticos ▾</span>
+                  <span class="is-open-text">Recolher detalhes ▴</span>
+                </span>
+              </span>
+            </button>
+            <div class="fnode__panel" id="panel-amostras">
+              <div class="fnode__panel-inner">
+                <div class="fnode__body">
+                  <p>
+                    A base amostral inicial combina dados fornecidos pela Associação Rede ILPF, Embrapa e parceiros regionais, submetidos a conferência visual em imagens de altíssima resolução (mosaicos Planet NICFI de 4,77 m, ortofotos Maxar e imagens históricas do Google Earth):
+                  </p>
+                  <ul class="method-list-styled">
+                    <li><strong>1.267 Talhões em Polígonos:</strong> Mapeamentos de propriedades rurais de referência com áreas delimitadas, histórico de safra/safrinha, sucessão de culturas, presença de componente arbóreo e rotação pecuária.</li>
+                    <li><strong>848 Pontos de Campo:</strong> Amostras de verdade terrestre auditadas com identificação de município, UF e sistema produtivo (ILP, IPF, ILF, ILPF, Pastagem pura, Silvicultura e Agricultura).</li>
+                    <li><strong>Perfil Fenológico Mensal de EVI2:</strong> Extração da mediana mensal de EVI2 (13 registros mensais de outubro do ano vigente a outubro do ano seguinte), documentando a dinâmica de pico vegetativo, senescência e manejo.</li>
+                    <li><strong>Estratificação Independente (Treino / Teste):</strong> Divisão estratificada dos registros utilizáveis para treinamento (auto-supervisionado + supervisionado) e avaliação cega independente.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+          <div class="fc-arrow fc-arrow--short" aria-hidden="true"></div>
+        </div>
+
+      </div>
+
+      <!-- LINHA 4: ETAPA 05 — MODELAGEM SUPERVISIONADA (TEMP_CNN) -->
+      <div class="flow__row">
+        <div class="flow__col" style="grid-column: 1 / -1;">
+          {% include bernard_analisis.html %}
+        </div>
+      </div>
+
+      <!-- DIVISOR 3: ENTREGA 5 (PLANEJADO) -->
+      <div class="flow__divider">
+        <span>Entrega 5 · Validação Independente &amp; Integração no Atlas das Pastagens (Planejado)</span>
+      </div>
+
+      <!-- LINHA 5: ETAPA 06 -->
+      <div class="flow__row">
+
+        <!-- ETAPA 06: VALIDAÇÃO INDEPENDENTE & ATLAS DAS PASTAGENS -->
+        <div class="flow__col" style="grid-column: 1 / -1;">
+          <article class="fnode fnode--valid" id="step-validacao">
+            <button class="fnode__toggle" type="button" aria-expanded="false" aria-controls="panel-validacao">
+              <span class="fnode__bar">
+                <span class="fnode__num">06</span>
+                <span class="fnode__titles">
+                  <span class="fnode__phase">Fase 6 · Aferição de Qualidade &amp; Plataforma</span>
+                  <span class="fnode__title">Validação Independente &amp; Integração Atlas</span>
+                </span>
+                <span class="fstatus fstatus--plan">Planejado</span>
+                <span class="fnode__chev">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </span>
+              <span class="fnode__summary">
+                <span class="fnode__desc">
+                  Matriz de confusão sobre amostras de teste 100% cegas (Overall Accuracy, Kappa, F1-Score), camada aberta no Atlas das Pastagens e workshop técnico.
+                </span>
+                <span class="fnode__kpis">
+                  <span class="fkpi"><span class="fkpi__v">F1 / Kappa</span><span class="fkpi__l">Acurácia e Exatidão</span></span>
+                  <span class="fkpi"><span class="fkpi__v">Atlas LAPIG</span><span class="fkpi__l">Plataforma Pública</span></span>
+                  <span class="fkpi"><span class="fkpi__v">App GEE</span><span class="fkpi__l">Visualizador Nuvem</span></span>
+                  <span class="fkpi"><span class="fkpi__v">1 Semana</span><span class="fkpi__l">Workshop Técnico</span></span>
+                </span>
+                <span class="fnode__more">
+                  <span class="is-closed-text">Ver detalhes analíticos ▾</span>
+                  <span class="is-open-text">Recolher detalhes ▴</span>
+                </span>
+              </span>
+            </button>
+            <div class="fnode__panel" id="panel-validacao">
+              <div class="fnode__panel-inner">
+                <div class="fnode__body">
+                  <p>
+                    A homologação final do mapa segue os mais rigorosos protocolos de estatística espacial e validação temática:
+                  </p>
+                  <ul class="method-list-styled">
+                    <li><strong>Matriz de Confusão Cega:</strong> Avaliação contra a partição de teste independente (amostras que nunca foram vistas durante o treinamento do modelo), gerando métricas de Acurácia Global, Coeficiente Kappa, Precisão do Usuário e Sensibilidade do Produtor (Recall).</li>
+                    <li><strong>Métricas F1-Score por Tipologia:</strong> Apuração detalhada da performance para cada modalidade (ILP, IPF, ILF, ILPF, Pastagem Convencional e Agricultura Solteira).</li>
+                    <li><strong>Mapa de Incerteza por Pixel:</strong> Geração de uma camada raster auxiliar representando a entropia e a margem de probabilidade do ensemble Random Forest em cada célula de 10 m.</li>
+                    <li><strong>Disponibilização Aberta &amp; Capacitação:</strong>
+                      Publicação da camada no <strong>Atlas das Pastagens (LAPIG/UFG)</strong>, aplicativo interativo no Google Earth Engine, disponibilização dos códigos-fonte abertos e realização de <strong>workshop presencial de capacitação de 1 semana</strong> para os membros técnicos da Rede ILPF.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+          <div class="fc-fill" aria-hidden="true"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>

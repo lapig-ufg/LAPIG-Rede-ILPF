@@ -1,0 +1,36 @@
+tipo_feicao,uso_2020,uso_2025,total_amostras,area_total_ha
+Polígono,Pastagem,Pastagem,427,24162.48
+Polígono,Agricultura,Agricultura,324,37839.46
+Polígono,Floresta/Silvicultura,Floresta/Silvicultura,161,6071.48
+Polígono,Pastagem,Agricultura,103,1966.45
+Polígono,Outros,Outros,42,1021.07
+Polígono,Mosaico de Usos,Agricultura,33,885.41
+Polígono,Outros,Pastagem,30,466.87
+Polígono,Pastagem,Mosaico de Usos,28,1063.0
+Polígono,Agricultura,Mosaico de Usos,25,1711.15
+Polígono,Mosaico de Usos,Pastagem,23,898.98
+Polígono,Floresta/Silvicultura,Mosaico de Usos,14,110.74
+Polígono,Outros,Mosaico de Usos,14,45.64
+Polígono,Pastagem,Floresta/Silvicultura,10,236.05
+Polígono,Pastagem,Outros,8,549.48
+Polígono,Floresta/Silvicultura,Pastagem,6,21.18
+Polígono,Mosaico de Usos,Mosaico de Usos,6,330.06
+Polígono,Agricultura,Pastagem,5,173.66
+Polígono,Floresta/Silvicultura,Agricultura,5,592.0
+Polígono,Outros,Agricultura,3,107.25
+Ponto,Agricultura,Agricultura,376,0.0
+Ponto,Pastagem,Pastagem,108,0.0
+Ponto,Floresta/Silvicultura,Floresta/Silvicultura,96,0.0
+Ponto,Mosaico de Usos,Mosaico de Usos,52,0.0
+Ponto,Pastagem,Mosaico de Usos,44,0.0
+Ponto,Mosaico de Usos,Pastagem,32,0.0
+Ponto,Outros,Outros,32,0.0
+Ponto,Mosaico de Usos,Outros,20,0.0
+Ponto,Mosaico de Usos,Agricultura,20,0.0
+Ponto,Pastagem,Agricultura,16,0.0
+Ponto,Agricultura,Pastagem,16,0.0
+Ponto,Agricultura,Mosaico de Usos,12,0.0
+Ponto,Pastagem,Floresta/Silvicultura,8,0.0
+Ponto,Outros,Mosaico de Usos,8,0.0
+Ponto,Outros,Agricultura,4,0.0
+Ponto,Outros,Pastagem,4,0.0

@@ -1,0 +1,23 @@
+# Documentos internos e arquivos temporários
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+GUIA_MANUTENCAO.md
+documentos_de_base/
+temp_media/
+
+# Arquivos GeoTIFF brutos e zips pesados (>100MB)
+mapas_base/*.tif
+mapas_base/*.zip
+*.tif
+*.zip
+
+# Jekyll build output
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+# Arquivos de backup
+*.bak
+*.tmp

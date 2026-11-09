@@ -1,0 +1,82 @@
+<!-- ═══════════════════════════════════════════════════════════════════════
+       CRONOGRAMA — CARD DE STATUS MINIMALISTA (HOME)
+       Espelhado no padrão WRI/LAPIG · Abre cronograma completo em /cronograma/
+  ═══════════════════════════════════════════════════════════════════════ -->
+<section class="section status-section reveal" id="cronograma">
+  <div class="status-card">
+    <div class="status-card__info">
+      <span class="agora-pill"><span class="pulso"></span> Onde Estamos</span>
+      <h3 id="st-titulo">Etapa 2 · Base Amostral Inspecionada &amp; Expansão TW-DTW</h3>
+      <p class="sub" id="st-sub">
+        <strong>Entrega 1</strong> (Data cube com 230 variáveis filtradas e Grade Brasil de 18.340 tiles) <strong>concluída</strong>.
+        <strong>Entrega 2</strong> (Curadoria de 2.115 amostras e séries sazonais de 13 meses de EVI2 com expansão TW-DTW) <strong>em execução ativa</strong>.
+        Próxima entrega: <strong>Entrega 3</strong> (Classificação preliminar nacional 10 m com Random Forest no GEE e pós-processamento espacial).
+      </p>
+      <div class="status-card__actions">
+        <a class="landscape-action" href="{{ '/cronograma/' | relative_url }}">
+          <span>Ver Cronograma Completo &amp; Marcos</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- TRILHO INTERATIVO DA LINHA DO TEMPO -->
+    <div class="linha-tempo" aria-label="Linha do tempo dos marcos contratuais">
+      <div class="lt-trilho" id="trilho-home">
+        <div class="lt-prog" id="prog-home" style="width: 45%;"></div>
+      </div>
+      <div class="lt-legenda">
+        <span class="l-ok">Concluído / Entregue</span>
+        <span class="l-ag">Atual / Em Execução</span>
+        <span class="l-fu">Previsto / Próximas Entregas</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  var inicio = "2026-05-01", fim = "2027-04-30";
+  var marcos = [
+    { id: "M0", rot: "Mobilização", data: "2026-05-15", st: "ok" },
+    { id: "E1", rot: "Entrega 1 (Data Cube)", data: "2026-07-30", st: "ok" },
+    { id: "E2", rot: "Entrega 2 (Amostras TW-DTW)", data: "2026-11-15", st: "ag" },
+    { id: "E3", rot: "Entrega 3 (Mapa Quase Final)", data: "2027-01-30", st: "fu", cima: true },
+    { id: "E4", rot: "Entrega 4 (Validação & Atlas)", data: "2027-03-15", st: "fu" },
+    { id: "E5", rot: "Entrega 5 (Capacitação / Final)", data: "2027-04-30", st: "fu", cima: true }
+  ];
+
+  var tr = document.getElementById("trilho-home");
+  var pr = document.getElementById("prog-home");
+  if (!tr || !pr) return;
+
+  var t0 = +new Date(inicio + "T12:00:00"), t1 = +new Date(fim + "T12:00:00");
+  var hoje = Date.now();
+  var pos = function(d) {
+    return Math.max(0, Math.min(100, (+new Date(d + "T12:00:00") - t0) / (t1 - t0) * 100));
+  };
+  var ph = Math.max(0, Math.min(100, (hoje - t0) / (t1 - t0) * 100));
+  pr.style.width = ph.toFixed(1) + "%";
+
+  tr.insertAdjacentHTML("beforeend", '<div class="lt-hoje" style="left:' + ph.toFixed(1) + '%">Hoje</div>');
+  tr.insertAdjacentHTML("beforeend", '<div class="marco agora" style="left:' + ph.toFixed(1) + '%" title="Data Atual"></div>');
+
+  var fmt = function(d) {
+    var dt = new Date(d + "T12:00:00");
+    return dt.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
+  };
+
+  marcos.forEach(function(m) {
+    var x = pos(m.data).toFixed(1);
+    tr.insertAdjacentHTML(
+      "beforeend",
+      '<div class="marco ' + m.st + '" style="left:' + x + '%" title="' + m.rot + '">' + (m.st === "ok" ? "✓" : "") + '</div>' +
+      '<div class="marco-rot' + (m.cima ? " cima" : "") + '" style="left:' + x + '%"><b>' + m.id + '</b>' + fmt(m.data) + '</div>'
+    );
+  });
+})();
+</script>

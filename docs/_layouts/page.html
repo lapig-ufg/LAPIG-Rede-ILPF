@@ -1,0 +1,21 @@
+---
+layout: default
+---
+{% include nav.html %}
+
+<!-- Page Header with Back Button -->
+<div class="page-header">
+  {% include back_button.html %}
+  {% if page.page_eyebrow %}
+  <div class="page-header__eyebrow">{{ page.page_eyebrow }}</div>
+  {% endif %}
+  <h1 class="page-header__title">{{ page.title }}</h1>
+  {% if page.page_desc %}
+  <p class="page-header__desc">{{ page.page_desc }}</p>
+  {% endif %}
+</div>
+
+{{ content }}
+
+{% include footer.html %}
+
