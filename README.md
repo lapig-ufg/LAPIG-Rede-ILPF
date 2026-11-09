@@ -46,7 +46,7 @@ Estruturada em arquitetura estática modular compatível com GitHub Pages (Fonte
 ## 📁 Estrutura de Diretórios do Repositório
 
 ```
-Rede_ILPF_LAPIG/
+LAPIG-Rede-ILPF/
 │
 ├── 🌐 docs/                          # Plataforma Web (Jekyll / GitHub Pages: /docs)
 │   ├── _config.yml                  # Configuração Jekyll do site
